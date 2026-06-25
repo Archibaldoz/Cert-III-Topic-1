@@ -1,1 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fitness Foundations — Study App</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#0f172a;min-height:100vh}
 
+/* HEADER */
+.app-header{background:#fff;border-bottom:1px solid #e2e8f0;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.app-title{display:flex;align-items:center;gap:10px}
+.app-title .logo{width:34px;height:34px;background:linear-gradient(135deg,#3b82f6,#6366f1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem}
+.app-title h1{font-size:.95rem;font-weight:700;color:#1e293b}
+.app-title p{font-size:.72rem;color:#94a3b8}
+.header-stats{display:flex;gap:14px}
+.hstat{text-align:center}.hstat .n{font-size:1.1rem;font-weight:800;color:#3b82f6}.hstat .l{font-size:.65rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px}
+
+/* TABS */
+.tabs{background:#fff;border-bottom:1px solid #e2e8f0;padding:0 28px;display:flex;gap:2px;overflow-x:auto}
+.tab{padding:12px 16px;border:none;background:none;cursor:pointer;font-size:.82rem;font-weight:600;color:#64748b;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s}
+.tab:hover{color:#1e293b}
+.tab.active{color:#3b82f6;border-bottom-color:#3b82f6}
+
+/* LAYOUT */
+.content{max-width:860px;margin:0 auto;padding:28px 20px}
+.section{display:none}.section.active{display:block}
+
+/* CHAPTER BADGE */
+.ch-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.ch1-badge{background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe}
+.ch2-badge{background:#f0f9ff;color:#0369a1;border:1px solid #bae6fd}
+.ch3-badge{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+.ch4-badge{background:#fff7ed;color:#92400e;border:1px solid #fed7aa}
+
+/* CARDS */
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.card+.card{margin-top:12px}
+.card h3{font-size:.9rem;font-weight:700;color:#1e293b;margin-bottom:8px}
+.card p,.card li{font-size:.82rem;color:#475569;line-height:1.7}
+.card ul{padding-left:16px}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.grid.three{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:600px){.grid,.grid.three{grid-template-columns:1fr}}
+
+/* TOPIC SECTION */
+.topic{margin-bottom:32px}
+.topic-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.topic-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.topic-icon.violet{background:#f5f3ff}
+.topic-icon.blue{background:#f0f9ff}
+.topic-icon.green{background:#ecfdf5}
+.topic-icon.orange{background:#fff7ed}
+.topic-icon.rose{background:#fff1f2}
+.topic-icon.teal{background:#f0fdfa}
+.topic-title h2{font-size:1.05rem;font-weight:700;color:#1e293b}
+.topic-title p{font-size:.78rem;color:#94a3b8}
+
+/* TABLES */
+.tbl-wrap{overflow-x:auto;margin:12px 0;border-radius:10px;border:1px solid #e2e8f0}
+table{width:100%;border-collapse:collapse;font-size:.79rem}
+th{background:#f8fafc;padding:9px 12px;text-align:left;font-weight:600;color:#475569;border-bottom:1px solid #e2e8f0}
+td{padding:9px 12px;border-bottom:1px solid #f1f5f9;color:#334155;vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f8fafc}
+
+/* INFO CALLOUT */
+.callout{border-radius:10px;padding:14px 16px;margin:12px 0;display:flex;gap:10px}
+.callout.blue{background:#eff6ff;border:1px solid #bfdbfe}
+.callout.green{background:#f0fdf4;border:1px solid #bbf7d0}
+.callout.amber{background:#fffbeb;border:1px solid #fde68a}
+.callout.rose{background:#fff1f2;border:1px solid #fecdd3}
+.callout .icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.callout p{font-size:.82rem;color:#334155;line-height:1.65}
+.callout strong{color:#1e293b}
+
+/* MINI QUIZ */
+.mini-quiz{background:linear-gradient(135deg,#eef2ff,#f5f3ff);border:1px solid #c7d2fe;border-radius:14px;padding:20px;margin-top:20px}
+.mq-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.mq-title{display:flex;align-items:center;gap:8px;font-size:.88rem;font-weight:700;color:#4338ca}
+.mq-score{font-size:.78rem;color:#6366f1;font-weight:600}
+.mq-q{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #e0e7ff}
+.mq-q:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.mq-text{font-size:.85rem;font-weight:600;color:#1e293b;margin-bottom:8px;line-height:1.5}
+.mq-opts{display:flex;flex-direction:column;gap:6px}
+.mq-opt{background:#fff;border:1.5px solid #e0e7ff;border-radius:8px;padding:9px 12px;cursor:pointer;font-size:.81rem;color:#334155;text-align:left;transition:all .15s}
+.mq-opt:hover:not(.locked){border-color:#818cf8;color:#1e293b;background:#f5f3ff}
+.mq-opt.correct{border-color:#16a34a;background:#f0fdf4;color:#14532d}
+.mq-opt.wrong{border-color:#dc2626;background:#fff1f2;color:#7f1d1d}
+.mq-opt.locked{cursor:default}
+.mq-explain{font-size:.78rem;color:#475569;background:#fff;border-radius:7px;padding:9px 11px;margin-top:6px;line-height:1.6;display:none;border-left:3px solid #818cf8}
+.mq-explain.show{display:block}
+.mq-pass{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:12px;text-align:center;font-size:.84rem;font-weight:600;color:#15803d;display:none;margin-top:10px}
+.mq-pass.show{display:flex;align-items:center;justify-content:center;gap:6px}
+
+/* FLASHCARDS */
+.fc-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.fc-progress{flex:1;min-width:100px}
+.fc-prog-bar{height:6px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin-top:3px}
+.fc-prog-fill{height:100%;background:linear-gradient(90deg,#3b82f6,#6366f1);border-radius:99px;transition:width .3s}
+.fc-prog-text{font-size:.75rem;color:#64748b}
+.cat-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.pill{padding:4px 12px;border-radius:999px;border:1.5px solid #e2e8f0;background:#fff;color:#64748b;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+.pill.active{background:#3b82f6;border-color:#3b82f6;color:#fff}
+.flip-wrap{perspective:1000px;height:220px;cursor:pointer;margin-bottom:14px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flip-wrap.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:14px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:28px;text-align:center}
+.flip-front{background:#fff;border:1.5px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.flip-back{background:linear-gradient(135deg,#eff6ff,#f5f3ff);border:1.5px solid #c7d2fe;transform:rotateY(180deg)}
+.flip-label{font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;color:#94a3b8}
+.flip-back .flip-label{color:#6366f1}
+.flip-q{font-size:.95rem;font-weight:600;color:#1e293b;line-height:1.5}
+.flip-a{font-size:.84rem;color:#334155;line-height:1.7;white-space:pre-line}
+.flip-cat{position:absolute;top:10px;right:12px;font-size:.65rem;background:#f1f5f9;color:#64748b;padding:2px 8px;border-radius:99px;font-weight:600}
+.flip-back .flip-cat{background:#e0e7ff;color:#6366f1}
+.flip-hint{font-size:.73rem;color:#94a3b8;text-align:center;margin-bottom:8px}
+.btn-row{display:flex;gap:8px;justify-content:center}
+.btn{padding:9px 22px;border-radius:9px;border:none;cursor:pointer;font-size:.84rem;font-weight:600;transition:all .15s}
+.btn-primary{background:#3b82f6;color:#fff}.btn-primary:hover{background:#2563eb}
+.btn-secondary{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}.btn-secondary:hover{background:#e2e8f0}
+.btn-accent{background:#f5f3ff;color:#6366f1;border:1.5px solid #c7d2fe}.btn-accent:hover{background:#ede9fe}
+
+/* FULL QUIZ */
+.quiz-card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.q-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.q-ch-tag{font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.5px}
+.q-num{font-size:.8rem;color:#94a3b8}
+.q-text{font-size:.95rem;font-weight:600;color:#1e293b;line-height:1.6;margin-bottom:14px}
+.q-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+.q-opt{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:9px;padding:11px 14px;cursor:pointer;font-size:.84rem;color:#334155;text-align:left;transition:all .15s}
+.q-opt:hover:not(.locked){border-color:#93c5fd;background:#eff6ff;color:#1e293b}
+.q-opt.correct{border-color:#16a34a;background:#f0fdf4;color:#14532d}
+.q-opt.wrong{border-color:#dc2626;background:#fff1f2;color:#7f1d1d}
+.q-opt.locked{cursor:default}
+.q-feedback{font-size:.8rem;background:#f8fafc;border-radius:8px;padding:11px 13px;color:#475569;line-height:1.65;display:none;border-left:3px solid #93c5fd;margin-bottom:10px}
+.q-feedback.show{display:block}
+.q-feedback.fb-correct{border-left-color:#4ade80}
+.q-feedback.fb-wrong{border-left-color:#f87171}
+.quiz-result{text-align:center;padding:40px 20px}
+.result-ring{width:120px;height:120px;margin:0 auto 16px;position:relative}
+.result-ring svg{transform:rotate(-90deg)}
+.result-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;color:#1e293b}
+.result-msg{font-size:.95rem;color:#475569;margin-bottom:20px}
+.chapter-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+
+/* MUSCLES */
+.muscle-region-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.muscle-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.muscle-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:14px;cursor:pointer;transition:all .2s}
+.muscle-card:hover{border-color:#93c5fd;box-shadow:0 2px 8px rgba(59,130,246,.1)}
+.muscle-card.open{border-color:#3b82f6;background:#f0f9ff}
+.muscle-card .mc-name{font-size:.87rem;font-weight:700;color:#1e293b;margin-bottom:2px}
+.muscle-card .mc-region{font-size:.68rem;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.muscle-card .mc-actions{font-size:.75rem;color:#3b82f6;font-weight:600;margin-bottom:6px;display:none}
+.muscle-card .mc-detail{font-size:.76rem;color:#475569;line-height:1.6;display:none}
+.muscle-card.open .mc-actions,.muscle-card.open .mc-detail{display:block}
+.muscle-card .mc-expand{font-size:.72rem;color:#94a3b8}
+
+/* HOME */
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+.chapter-card{border-radius:14px;padding:20px;border:1.5px solid;cursor:pointer;transition:all .2s}
+.chapter-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1);transform:translateY(-1px)}
+.chapter-card h3{font-size:.92rem;font-weight:700;margin-bottom:6px}
+.chapter-card p{font-size:.78rem;line-height:1.6;opacity:.85}
+.chapter-card .ch-num{font-size:.68rem;font-weight:700;opacity:.7;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.ch1-card{background:#faf5ff;border-color:#ddd6fe;color:#4c1d95}
+.ch2-card{background:#f0f9ff;border-color:#bae6fd;color:#0c4a6e}
+.ch3-card{background:#ecfdf5;border-color:#a7f3d0;color:#064e3b}
+.ch4-card{background:#fff7ed;border-color:#fed7aa;color:#7c2d12}
+
+/* SVG DIAGRAMS */
+.diagram-wrap{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin:12px 0;overflow:hidden}
+.diagram-wrap svg{display:block;margin:0 auto}
+.diagram-caption{font-size:.72rem;color:#94a3b8;text-align:center;margin-top:8px}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="app-title">
+    <div class="logo">💪</div>
+    <div>
+      <h1>Fitness Foundations</h1>
+      <p>Certificate III in Fitness · SISFFIT047</p>
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="hstat"><div class="n">4</div><div class="l">Chapters</div></div>
+    <div class="hstat"><div class="n">60</div><div class="l">Flashcards</div></div>
+    <div class="hstat"><div class="n">17</div><div class="l">Quiz Qs</div></div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('home',this)">🏠 Home</button>
+  <button class="tab" onclick="showTab('ch1',this)">Ch 1 · Exercise Science</button>
+  <button class="tab" onclick="showTab('ch2',this)">Ch 2 · Anatomy</button>
+  <button class="tab" onclick="showTab('ch3',this)">Ch 3 · Applying</button>
+  <button class="tab" onclick="showTab('ch4',this)">Ch 4 · Maintaining</button>
+  <button class="tab" onclick="showTab('flashcards',this)">🃏 Flashcards</button>
+  <button class="tab" onclick="showTab('quiz',this)">✏️ Full Quiz</button>
+  <button class="tab" onclick="showTab('muscles',this)">💪 Muscles</button>
+</div>
+
+<div class="content">
+
+<!-- ===== HOME ===== -->
+<div id="home" class="section active">
+  <h2 style="font-size:1.2rem;font-weight:800;color:#1e293b;margin-bottom:4px">Your Study Dashboard</h2>
+  <p style="font-size:.82rem;color:#64748b;margin-bottom:18px">Select a chapter to start learning — each section has a mini quiz built in.</p>
+  <div class="home-grid">
+    <div class="chapter-card ch1-card" onclick="showTabById('ch1')">
+      <div class="ch-num">Chapter 1</div>
+      <h3>🔍 Exercise Science</h3>
+      <p>CRAAP test for evaluating sources. Credible databases and peak bodies. Staying up-to-date.</p>
+    </div>
+    <div class="chapter-card ch2-card" onclick="showTabById('ch2')">
+      <div class="ch-num">Chapter 2</div>
+      <h3>🦴 Anatomy & Physiology</h3>
+      <p>Body planes, directional terms, all body systems, muscles, energy systems and injury prevention.</p>
+    </div>
+    <div class="chapter-card ch3-card" onclick="showTabById('ch3')">
+      <div class="ch-num">Chapter 3</div>
+      <h3>🏋️ Applying Knowledge</h3>
+      <p>Using A&P during screening, testing, prescription and client instruction.</p>
+    </div>
+    <div class="chapter-card ch4-card" onclick="showTabById('ch4')">
+      <div class="ch-num">Chapter 4</div>
+      <h3>📈 Maintaining Knowledge</h3>
+      <p>Updating professional knowledge. Monitoring practice changes. CPD opportunities.</p>
+    </div>
+  </div>
+  <div class="callout blue">
+    <span class="icon">💡</span>
+    <p><strong>How to use this app:</strong> Read each chapter section, then answer the mini quiz that appears at the bottom of each topic. Use <strong>Flashcards</strong> to drill key terms, and <strong>Full Quiz</strong> to test yourself with the actual course checkpoint questions.</p>
+  </div>
+  <h3 style="font-size:.9rem;font-weight:700;color:#1e293b;margin:20px 0 10px">Key Antagonist Pairs</h3>
+  <div class="tbl-wrap"><table>
+    <tr><th>Prime Mover</th><th>Antagonist</th><th>Example Exercise</th></tr>
+    <tr><td>Biceps Brachii</td><td>Triceps Brachii</td><td>Arm curl → tricep extension</td></tr>
+    <tr><td>Pectoralis Major</td><td>Trapezius/Rhomboids</td><td>Bench press → seated row</td></tr>
+    <tr><td>Quadriceps</td><td>Hamstrings</td><td>Leg press → leg curl</td></tr>
+    <tr><td>Iliopsoas</td><td>Gluteus Maximus</td><td>Hip flexion → hip extension</td></tr>
+    <tr><td>Rectus Abdominis</td><td>Erector Spinae</td><td>Crunch → back extension</td></tr>
+    <tr><td>Tibialis Anterior</td><td>Gastrocnemius</td><td>Dorsiflexion → plantar flexion</td></tr>
+  </table></div>
+</div>
+
+<!-- ===== CH1 ===== -->
+<div id="ch1" class="section">
+  <span class="ch-badge ch1-badge">📚 Chapter 1 — Exercise Science</span>
+  <p style="font-size:.82rem;color:#64748b;margin-bottom:22px">Finding and evaluating credible information to support safe, evidence-based training.</p>
+
+  <!-- Topic 1: CRAAP -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon violet">🔍</div>
+      <div class="topic-title"><h2>The CRAAP Test</h2><p>A framework for evaluating the quality of any information source</p></div>
+    </div>
+    <div class="grid">
+      <div class="card"><h3 style="color:#7c3aed">C — Currency</h3><p>How <strong>recent</strong> is the information? Generally within 5 years for exercise science. Stable scientific laws may be older. Check the publication or revision date.</p></div>
+      <div class="card"><h3 style="color:#0369a1">R — Relevance</h3><p>Does it <strong>relate to your topic</strong>? Is it appropriate for your purpose and level? Is it the right type of source for your need?</p></div>
+      <div class="card"><h3 style="color:#059669">A — Authority</h3><p>Who wrote it? Are they <strong>qualified</strong>? Affiliated with a peak body, government organisation, or university? Check credentials and affiliation.</p></div>
+      <div class="card"><h3 style="color:#d97706">A — Accuracy</h3><p>Is it <strong>evidence-based</strong>? Does it cite credible sources? Can you verify the information in at least two other credible sources?</p></div>
+    </div>
+    <div class="card"><h3 style="color:#dc2626">P — Purpose</h3><p>Why does this information exist? To <strong>inform, educate, sell, entertain, or persuade</strong>? Identify any bias or conflicts of interest. Ask: who benefits from you believing this?</p></div>
+    <div class="callout amber">
+      <span class="icon">⚠️</span>
+      <p><strong>Red flags:</strong> No author listed · No date · .com with something to sell · No references · Extreme claims · "As seen on TV"</p>
+    </div>
+    <div class="mini-quiz" id="mq-craap">
+      <div class="mq-header">
+        <div class="mq-title">📝 Quick Check — CRAAP Test</div>
+        <div class="mq-score" id="mq-craap-score">0/2 correct</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topic 2: Credible Sources -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon violet">📖</div>
+      <div class="topic-title"><h2>Credible Sources</h2><p>Where to find trustworthy exercise science information</p></div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Source Type</th><th>Examples</th><th>Why Credible</th></tr>
+      <tr><td><strong>Peer-reviewed journals</strong></td><td>Journal of Strength & Conditioning Research, BJSM</td><td>Reviewed by qualified experts before publication</td></tr>
+      <tr><td><strong>Academic databases</strong></td><td>Google Scholar, JSTOR, ERIC, PLoS</td><td>Aggregates peer-reviewed and academic content</td></tr>
+      <tr><td><strong>Gov / Edu websites</strong></td><td>.gov.au, .edu sites</td><td>Accountability to public and institutional standards</td></tr>
+      <tr><td><strong>Australian peak bodies</strong></td><td>ESSA, AusActive, SMA, DAA, AHPA</td><td>Professional standards, qualified membership</td></tr>
+      <tr><td><strong>Allied health professionals</strong></td><td>Physios, GPs, dietitians, exercise physiologists</td><td>Registered, scope of practice, accountable</td></tr>
+    </table></div>
+    <div class="callout green">
+      <span class="icon">✅</span>
+      <p><strong>Good habit:</strong> Before applying any information to a client program, verify it in at least <strong>two credible sources</strong>. This satisfies the Accuracy criterion of CRAAP.</p>
+    </div>
+    <div class="mini-quiz" id="mq-sources">
+      <div class="mq-header">
+        <div class="mq-title">📝 Quick Check — Credible Sources</div>
+        <div class="mq-score" id="mq-sources-score">0/2 correct</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CH2 ===== -->
+<div id="ch2" class="section">
+  <span class="ch-badge ch2-badge">🦴 Chapter 2 — Anatomy & Physiology</span>
+  <p style="font-size:.82rem;color:#64748b;margin-bottom:22px">The main chapter. Work through each topic and answer the quick checks.</p>
+
+  <!-- Topic: Anatomical Position & Terms -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon blue">🧍</div>
+      <div class="topic-title"><h2>Anatomical Position & Directional Terms</h2><p>The universal reference point for describing the body</p></div>
+    </div>
+    <div class="callout blue">
+      <span class="icon">📌</span>
+      <p><strong>Anatomical Position:</strong> Standing erect, feet together, face and palms directed forward. ALL anatomical descriptions use this position as the reference point.</p>
+    </div>
+    <div class="diagram-wrap">
+      <svg width="480" height="200" viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Body silhouette representation -->
+        <rect x="190" y="10" width="100" height="180" rx="18" fill="#f0f9ff" stroke="#bae6fd" stroke-width="1.5"/>
+        <!-- Head -->
+        <circle cx="240" cy="30" r="18" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5"/>
+        <!-- Center line (sagittal) -->
+        <line x1="240" y1="5" x2="240" y2="195" stroke="#6366f1" stroke-width="2" stroke-dasharray="5,4"/>
+        <!-- Horizontal line (transverse) -->
+        <line x1="185" y1="110" x2="300" y2="110" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,4"/>
+        <!-- Labels -->
+        <text x="5" y="30" font-size="11" fill="#6366f1" font-weight="600">Sagittal plane</text>
+        <text x="5" y="44" font-size="10" fill="#6366f1">(divides L / R)</text>
+        <text x="5" y="108" font-size="11" fill="#f59e0b" font-weight="600">Transverse plane</text>
+        <text x="5" y="122" font-size="10" fill="#f59e0b">(divides upper / lower)</text>
+        <text x="310" y="95" font-size="11" fill="#059669" font-weight="600">Frontal plane</text>
+        <text x="310" y="109" font-size="10" fill="#059669">(divides front / back)</text>
+        <!-- Superior / Inferior arrows -->
+        <text x="222" y="8" font-size="10" fill="#64748b" font-weight="600">Superior</text>
+        <text x="222" y="198" font-size="10" fill="#64748b" font-weight="600">Inferior</text>
+        <!-- Medial / Lateral labels -->
+        <text x="195" y="155" font-size="9" fill="#94a3b8">← Medial</text>
+        <text x="248" y="155" font-size="9" fill="#94a3b8">Lateral →</text>
+      </svg>
+      <div class="diagram-caption">Three anatomical planes + key directional terms</div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Term</th><th>Meaning</th><th>Example</th></tr>
+      <tr><td><strong>Superior</strong></td><td>Above / toward head</td><td>Lungs are superior to the diaphragm</td></tr>
+      <tr><td><strong>Inferior</strong></td><td>Below / toward feet</td><td>Knee is inferior to hip</td></tr>
+      <tr><td><strong>Anterior</strong></td><td>Front of body</td><td>Chest is anterior to the spine</td></tr>
+      <tr><td><strong>Posterior</strong></td><td>Back of body</td><td>Glutes are posterior to the hip joint</td></tr>
+      <tr><td><strong>Medial</strong></td><td>Toward midline</td><td>Big toe side is medial</td></tr>
+      <tr><td><strong>Lateral</strong></td><td>Away from midline</td><td>Little toe side is lateral</td></tr>
+      <tr><td><strong>Proximal</strong></td><td>Closer to origin</td><td>Elbow is proximal to wrist</td></tr>
+      <tr><td><strong>Distal</strong></td><td>Further from origin</td><td>Hand is distal to elbow</td></tr>
+      <tr><td><strong>Superficial</strong></td><td>Near body surface</td><td>Skin is superficial to muscle</td></tr>
+      <tr><td><strong>Deep</strong></td><td>Away from surface</td><td>Stomach is a deep organ</td></tr>
+    </table></div>
+    <div class="mini-quiz" id="mq-anatpos">
+      <div class="mq-header">
+        <div class="mq-title">📝 Quick Check — Anatomical Position & Terms</div>
+        <div class="mq-score" id="mq-anatpos-score">0/2 correct</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topic: Body Planes -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon blue">✂️</div>
+      <div class="topic-title"><h2>Body Planes & Axes</h2><p>How we describe movement direction in 3D space</p></div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Plane</th><th>Divides Body</th><th>Movements</th><th>Exercise Examples</th></tr>
+      <tr><td><strong>Sagittal</strong></td><td>Left / Right</td><td>Flexion, extension, dorsiflexion, plantarflexion</td><td>Squat, lunge, bicep curl, deadlift</td></tr>
+      <tr><td><strong>Frontal (Coronal)</strong></td><td>Front / Back</td><td>Abduction, adduction, elevation, depression</td><td>Lateral raise, side lunge, lateral pulldown</td></tr>
+      <tr><td><strong>Transverse</strong></td><td>Upper / Lower</td><td>Rotation, supination, pronation, horizontal flexion</td><td>Golf swing, trunk rotation, cable chop</td></tr>
+    </table></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Axis</th><th>Direction</th><th>Associated Plane</th></tr>
+      <tr><td>Vertical</td><td>Inferior to superior</td><td>Transverse (rotation)</td></tr>
+      <tr><td>Frontal</td><td>Left to right</td><td>Sagittal (flexion/extension)</td></tr>
+      <tr><td>Sagittal</td><td>Posterior to anterior</td><td>Frontal (abduction/adduction)</td></tr>
+    </table></div>
+    <div class="mini-quiz" id="mq-planes">
+      <div class="mq-header">
+        <div class="mq-title">📝 Quick Check — Body Planes</div>
+        <div class="mq-score" id="mq-planes-score">0/2 correct</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topic: Body Organisation -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon teal">🔬</div>
+      <div class="topic-title"><h2>Body Organisation & Tissues</h2><p>From atoms to organisms — how the body is structured</p></div>
+    </div>
+    <div class="diagram-wrap">
+      <svg width="500" height="60" viewBox="0 0 500 60" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8"/></marker></defs>
+        <!-- Boxes -->
+        <g transform="translate(4,10)">
+          <rect x="0" y="10" width="52" height="28" rx="6" fill="#faf5ff" stroke="#ddd6fe"/>
+          <text x="26" y="28" text-anchor="middle" font-size="10" fill="#7c3aed" font-weight="600">Atoms</text>
+          <line x1="53" y1="24" x2="62" y2="24" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+        </g>
+        <g transform="translate(68,10)">
+          <rect x="0" y="10" width="62" height="28" rx="6" fill="#f0f9ff" stroke="#bae6fd"/>
+          <text x="31" y="28" text-anchor="middle" font-size="10" fill="#0369a1" font-weight="600">Molecules</text>
+          <line x1="63" y1="24" x2="72" y2="24" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+        </g>
+        <g transform="translate(144,10)">
+          <rect x="0" y="10" width="48" height="28" rx="6" fill="#ecfdf5" stroke="#a7f3d0"/>
+          <text x="24" y="28" text-anchor="middle" font-size="10" fill="#059669" font-weight="600">Cells</text>
+          <line x1="49" y1="24" x2="58" y2="24" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+        </g>
+        <g transform="translate(205,10)">
+          <rect x="0" y="10" width="52" height="28" rx="6" fill="#fff7ed" stroke="#fed7aa"/>
+          <text x="26" y="28" text-anchor="middle" font-size="10" fill="#92400e" font-weight="600">Tissues</text>
+          <line x1="53" y1="24" x2="62" y2="24" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+        </g>
+        <g transform="translate(271,10)">
+          <rect x="0" y="10" width="52" height="28" rx="6" fill="#fff1f2" stroke="#fecdd3"/>
+          <text x="26" y="28" text-anchor="middle" font-size="10" fill="#9f1239" font-weight="600">Organs</text>
+          <line x1="53" y1="24" x2="62" y2="24" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+        </g>
+        <g transform="translate(337,10)">
+          <rect x="0" y="10" width="68" height="28" rx="6" fill="#eff6ff" stroke="#bfdbfe"/>
+          <text x="34" y="28" text-anchor="middle" font-size="10" fill="#1d4ed8" font-weight="600">Org Systems</text>
+          <line x1="69" y1="24" x2="78" y2="24" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+        </g>
+        <g transform="translate(420,10)">
+          <rect x="0" y="10" width="64" height="28" rx="6" fill="#f5f3ff" stroke="#c4b5fd"/>
+          <text x="32" y="28" text-anchor="middle" font-size="10" fill="#6d28d9" font-weight="600">Organism</text>
+        </g>
+      </svg>
+      <div class="diagram-caption">Structural organisation — smallest to largest</div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Tissue Type</th><th>Function</th><th>Example Locations</th></tr>
+      <tr><td><strong>Epithelial</strong></td><td>Covers surfaces, secretion, absorption, filtration</td><td>Skin, linings of organs, glands</td></tr>
+      <tr><td><strong>Connective</strong></td><td>Support, protection, binding structures</td><td>Bone, cartilage, blood, ligaments, tendons</td></tr>
+      <tr><td><strong>Muscle</strong></td><td>Skeletal (voluntary), smooth (involuntary), cardiac</td><td>Muscles, heart, blood vessels, digestive system</td></tr>
+      <tr><td><strong>Nervous</strong></td><td>Receives stimuli, conducts nerve impulses</td><td>Brain, spinal cord, nerves</td></tr>
+    </table></div>
+    <div class="mini-quiz" id="mq-bodyorg">
+      <div class="mq-header">
+        <div class="mq-title">📝 Quick Check — Body Organisation</div>
+        <div class="mq-score" id="mq-bodyorg-score">0/2 correct</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topic: Cardiovascular -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon rose">❤️</div>
+      <div class="topic-title"><h2>Cardiovascular System</h2><p>The heart, blood vessels, and how blood circulates</p></div>
+    </div>
+    <div class="diagram-wrap">
+      <svg width="500" height="130" viewBox="0 0 500 130" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="arb" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#3b82f6"/></marker>
+        <marker id="arr2" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#dc2626"/></marker></defs>
+        <!-- Deoxygenated side (blue) -->
+        <rect x="10" y="40" width="80" height="28" rx="7" fill="#dbeafe" stroke="#93c5fd"/>
+        <text x="50" y="58" text-anchor="middle" font-size="10" fill="#1d4ed8" font-weight="600">Right Heart</text>
+        <!-- Lungs -->
+        <rect x="130" y="14" width="80" height="28" rx="7" fill="#f0fdf4" stroke="#86efac"/>
+        <text x="170" y="32" text-anchor="middle" font-size="10" fill="#15803d" font-weight="600">Lungs 🫁</text>
+        <text x="170" y="44" text-anchor="middle" font-size="8.5" fill="#15803d">(gas exchange)</text>
+        <!-- Left heart -->
+        <rect x="250" y="40" width="80" height="28" rx="7" fill="#fee2e2" stroke="#fca5a5"/>
+        <text x="290" y="58" text-anchor="middle" font-size="10" fill="#b91c1c" font-weight="600">Left Heart</text>
+        <!-- Body -->
+        <rect x="370" y="40" width="80" height="28" rx="7" fill="#fef9c3" stroke="#fde047"/>
+        <text x="410" y="58" text-anchor="middle" font-size="10" fill="#713f12" font-weight="600">Body 🏃</text>
+        <!-- Arrows -->
+        <path d="M90,45 C110,20 115,20 129,28" stroke="#3b82f6" fill="none" stroke-width="1.8" marker-end="url(#arb)"/>
+        <text x="95" y="18" font-size="9" fill="#3b82f6">Pulmonary artery</text>
+        <path d="M211,28 C225,20 235,35 249,50" stroke="#dc2626" fill="none" stroke-width="1.8" marker-end="url(#arr2)"/>
+        <text x="218" y="23" font-size="9" fill="#dc2626">Pulm. veins</text>
+        <line x1="331" y1="54" x2="369" y2="54" stroke="#dc2626" stroke-width="1.8" marker-end="url(#arr2)"/>
+        <text x="338" y="48" font-size="9" fill="#dc2626">Aorta</text>
+        <path d="M410,69 Q410,110 290,110 Q170,110 50,110 Q10,110 10,69" stroke="#3b82f6" fill="none" stroke-width="1.8" stroke-dasharray="4,3" marker-end="url(#arb)"/>
+        <text x="200" y="124" text-anchor="middle" font-size="9" fill="#3b82f6">Returns via vena cava (deoxygenated)</text>
+      </svg>
+      <div class="diagram-caption">Pulmonary (blue = deoxygenated) and systemic (red = oxygenated) circulation</div>
+    </div>
+    <div class="grid">
+      <div class="card"><h3>Key Measurements</h3>
+        <p>🫀 <strong>Resting HR:</strong> 60–80 bpm<br>
+        📊 <strong>Blood Pressure:</strong> 120/80 mmHg<br>
+        💧 <strong>Stroke Volume (SV):</strong> Volume per beat — plateaus at ~50% max HR<br>
+        📈 <strong>Cardiac Output:</strong> HR × SV</p>
+      </div>
+      <div class="card"><h3>Blood Vessels</h3>
+        <p>🔴 <strong>Arteries</strong> — carry blood away from heart (oxygenated, except pulmonary artery)<br>
+        🔵 <strong>Veins</strong> — return blood to heart (deoxygenated, except pulmonary veins)<br>
+        🔗 <strong>Capillaries</strong> — site of O₂/CO₂ and nutrient exchange</p>
+      </div>
+    </div>
+    <div class="mini-quiz" id="mq-cardio">
+      <div class="mq-header">
+        <div class="mq-title">📝 Quick Check — Cardiovascular System</div>
+        <div class="mq-score" id="mq-cardio-score">0/2 correct</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topic: Respiratory -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon blue">🫁</div>
+      <div class="topic-title"><h2>Respiratory System</h2><p>Breathing mechanics and gas exchange</p></div>
+    </div>
+    <div class="callout blue">
+      <span class="icon">📌</span>
+      <p><strong>Path of air:</strong> Nose/Mouth → Pharynx → Larynx → Trachea → Bronchi → Bronchioles → <strong>Alveoli</strong> (gas exchange happens here — O₂ in, CO₂ out)</p>
+    </div>
+    <div class="grid">
+      <div class="card"><h3>Breathing Mechanism</h3>
+        <p>⬇️ <strong>Inhale:</strong> Diaphragm contracts (moves down), intercostals lift rib cage → chest expands → air rushes in<br><br>
+        ⬆️ <strong>Exhale:</strong> Mostly passive — diaphragm relaxes, rib cage drops → air pushed out</p>
+      </div>
+      <div class="card"><h3>Key Numbers</h3>
+        <p>💨 Normal resting rate: <strong>12–16 breaths/min</strong><br><br>
+        🫁 Tidal volume: air per normal breath<br>
+        📦 Total lung capacity: max air held<br>
+        💪 Vital capacity: max exhale after max inhale<br>
+        🔒 Residual volume: air always remaining</p>
+      </div>
+    </div>
+    <div class="mini-quiz" id="mq-resp">
+      <div class="mq-header">
+        <div class="mq-title">📝 Quick Check — Respiratory System</div>
+        <div class="mq-score" id="mq-resp-score">0/2 correct</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topic: Energy Systems -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon orange">⚡</div>
+      <div class="topic-title"><h2>Energy Systems</h2><p>How your body produces fuel (ATP) for exercise</p></div>
+    </div>
+    <div class="diagram-wrap">
+      <svg width="500" height="110" viewBox="0 0 500 110" xmlns="http://www.w3.org/2000/svg">
+        <!-- Timeline bar -->
+        <text x="10" y="18" font-size="11" fill="#475569" font-weight="700">Exercise Duration →</text>
+        <!-- Alactic 0-10s -->
+        <rect x="10" y="26" width="90" height="38" rx="8" fill="#fef3c7" stroke="#fde68a"/>
+        <text x="55" y="43" text-anchor="middle" font-size="10.5" fill="#92400e" font-weight="700">⚡ Alactic</text>
+        <text x="55" y="57" text-anchor="middle" font-size="9" fill="#92400e">0 – 10 seconds</text>
+        <!-- Lactic 10s-2min -->
+        <rect x="110" y="26" width="150" height="38" rx="8" fill="#fee2e2" stroke="#fca5a5"/>
+        <text x="185" y="43" text-anchor="middle" font-size="10.5" fill="#b91c1c" font-weight="700">🔥 Lactic</text>
+        <text x="185" y="57" text-anchor="middle" font-size="9" fill="#b91c1c">10 sec – 2 minutes</text>
+        <!-- Aerobic 2min+ -->
+        <rect x="270" y="26" width="220" height="38" rx="8" fill="#dcfce7" stroke="#86efac"/>
+        <text x="380" y="43" text-anchor="middle" font-size="10.5" fill="#15803d" font-weight="700">🌬️ Aerobic</text>
+        <text x="380" y="57" text-anchor="middle" font-size="9" fill="#15803d">2 minutes and beyond</text>
+        <!-- Key labels -->
+        <text x="55" y="82" text-anchor="middle" font-size="9" fill="#92400e">ATP-CP · Anaerobic · No lactate</text>
+        <text x="185" y="82" text-anchor="middle" font-size="9" fill="#b91c1c">Carbohydrates · Anaerobic · Produces lactate</text>
+        <text x="380" y="82" text-anchor="middle" font-size="9" fill="#15803d">Carbs + Fats + O₂ · Aerobic</text>
+        <!-- Time markers -->
+        <text x="10" y="102" font-size="9" fill="#94a3b8">0s</text>
+        <text x="95" y="102" font-size="9" fill="#94a3b8">10s</text>
+        <text x="255" y="102" font-size="9" fill="#94a3b8">2min</text>
+        <text x="475" y="102" font-size="9" fill="#94a3b8">∞</text>
+      </svg>
+      <div class="diagram-caption">The 3 energy systems and when they dominate</div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <tr><th>System</th><th>Training Example</th><th>Rest Period</th></tr>
+      <tr><td><strong>Alactic (ATP-CP)</strong></td><td>Max effort sprint ≤12s, heavy lifts 1-3 reps</td><td>Up to 5 min full recovery</td></tr>
+      <tr><td><strong>Lactic</strong></td><td>800m run, boxing rounds, HIIT intervals</td><td>≤2 min between sets</td></tr>
+      <tr><td><strong>Aerobic</strong></td><td>5km jog, cycling, steady-state cardio</td><td>1–2 min between intervals</td></tr>
+    </table></div>
+    <div class="mini-quiz" id="mq-energy">
+      <div class="mq-header">
+        <div class="mq-title">📝 Quick Check — Energy Systems</div>
+        <div class="mq-score" id="mq-energy-score">0/2 correct</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topic: Muscle Function -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon teal">💪</div>
+      <div class="topic-title"><h2>Muscle Function & Contraction Types</h2><p>How muscles produce and control movement</p></div>
+    </div>
+    <div class="grid">
+      <div class="card"><h3>Contraction Types</h3>
+        <p>🏋️ <strong>Concentric:</strong> Muscle shortens under load. E.g. lifting phase of bicep curl<br><br>
+        ⬇️ <strong>Eccentric:</strong> Muscle lengthens under load. E.g. lowering phase. Causes DOMS<br><br>
+        🧱 <strong>Isometric:</strong> No change in length. E.g. plank, wall sit</p>
+      </div>
+      <div class="card"><h3>4 Muscle Roles</h3>
+        <p>🎯 <strong>Prime mover (agonist):</strong> Causes the movement<br>
+        🔄 <strong>Antagonist:</strong> Opposes movement, returns limb<br>
+        🤝 <strong>Synergist:</strong> Assists prime mover<br>
+        🏛️ <strong>Fixator/Stabiliser:</strong> Holds rest of body in place</p>
+      </div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Fibre Type</th><th>Speed</th><th>Endurance</th><th>System</th><th>Best For</th></tr>
+      <tr><td><strong>Type I</strong> (slow-twitch)</td><td>Slow</td><td>High (fatigue-resistant)</td><td>Aerobic</td><td>Endurance, posture</td></tr>
+      <tr><td><strong>Type IIa</strong> (intermediate)</td><td>Medium</td><td>Medium</td><td>Both</td><td>Team sports, intervals</td></tr>
+      <tr><td><strong>Type IIb</strong> (fast-twitch)</td><td>Fast</td><td>Low (fatigues quickly)</td><td>Anaerobic</td><td>Power, sprinting</td></tr>
+    </table></div>
+    <div class="mini-quiz" id="mq-musclefn">
+      <div class="mq-header">
+        <div class="mq-title">📝 Quick Check — Muscle Function</div>
+        <div class="mq-score" id="mq-musclefn-score">0/2 correct</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topic: Injury & Safety -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon rose">⚠️</div>
+      <div class="topic-title"><h2>Injury Types & Prevention</h2></div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Type</th><th>Definition</th><th>Gym Example</th></tr>
+      <tr><td><strong>Acute</strong></td><td>Sudden, severe onset</td><td>Muscle tear from max lift</td></tr>
+      <tr><td><strong>Overuse</strong></td><td>Repeated micro-trauma, no single cause</td><td>Hamstring strain from running overload</td></tr>
+      <tr><td><strong>Direct</strong></td><td>External force applied to body</td><td>Fracture from dropped weight</td></tr>
+      <tr><td><strong>Indirect</strong></td><td>Excessive internal force</td><td>Torn ACL from twisting with planted foot</td></tr>
+    </table></div>
+    <div class="callout rose">
+      <span class="icon">⛔</span>
+      <p><strong>Exercises to avoid:</strong> Behind-neck lat pulldown · Barbell upright row · Smith machine squats · Ballistic stretching · Behind-back triceps dips · Behind-neck military press</p>
+    </div>
+    <div class="callout green">
+      <span class="icon">✅</span>
+      <p><strong>Prevention techniques:</strong> Proper warm-up every session · Correct form before increasing load · Core strengthening · Balanced programming (opposing muscle groups) · Avoid risky movements</p>
+    </div>
+    <div class="mini-quiz" id="mq-injury">
+      <div class="mq-header">
+        <div class="mq-title">📝 Quick Check — Injury & Prevention</div>
+        <div class="mq-score" id="mq-injury-score">0/2 correct</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Topic: Body Cavities -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon blue">🫙</div>
+      <div class="topic-title"><h2>Body Cavities</h2><p>Internal spaces that house and protect organs</p></div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Cavity</th><th>Location</th><th>Contains</th></tr>
+      <tr><td><strong>Dorsal</strong></td><td>Posterior (back) of body</td><td>Brain and spinal cord (the CNS)</td></tr>
+      <tr><td><strong>Cranial</strong></td><td>Within the skull</td><td>Brain — fully protected by skull bones</td></tr>
+      <tr><td><strong>Thoracic</strong></td><td>Chest — above diaphragm</td><td>Heart, lungs, trachea, oesophagus</td></tr>
+      <tr><td><strong>Abdominal</strong></td><td>Below diaphragm, above pelvis</td><td>Stomach, intestines, liver, kidneys, spleen</td></tr>
+      <tr><td><strong>Pelvic</strong></td><td>Enclosed by pelvic bones</td><td>Bladder, rectum, reproductive organs</td></tr>
+    </table></div>
+    <div class="callout blue"><span class="icon">💡</span><p>The <strong>diaphragm</strong> separates the thoracic cavity from the abdominal cavity. The dorsal cavity is continuous — the cranial cavity sits at the top of the spinal column cavity.</p></div>
+    <div class="mini-quiz" id="mq-bodycav">
+      <div class="mq-header"><div class="mq-title">📝 Quick Check — Body Cavities</div><div class="mq-score" id="mq-bodycav-score">0/2 correct</div></div>
+    </div>
+  </div>
+
+  <!-- Topic: Vertebral Curves + Bony Landmarks -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon blue">🦴</div>
+      <div class="topic-title"><h2>Vertebral Curves & Bony Landmarks</h2><p>Normal spinal curves, disorders, and bone surface markings</p></div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Curve</th><th>Region</th><th>Direction</th><th>Disorder if Excessive</th><th>Exercise Fix</th></tr>
+      <tr><td><strong>Lordosis</strong> (normal)</td><td>Cervical + Lumbar</td><td>Forward (anterior)</td><td>Excessive lumbar lordosis</td><td>Quad &amp; hip flexor stretching</td></tr>
+      <tr><td><strong>Kyphosis</strong> (normal)</td><td>Thoracic + Sacral</td><td>Backward (posterior)</td><td>Excessive thoracic kyphosis / winged scapula</td><td>Seated cable rows; dumbbell pullover for winged scapula</td></tr>
+      <tr><td><strong>Scoliosis</strong></td><td>Any region</td><td>Lateral (sideways)</td><td>Abnormal lateral + twisting curve</td><td>Flexibility, mobility, and strengthening exercises</td></tr>
+    </table></div>
+    <h3 style="font-size:.86rem;font-weight:700;color:#1e293b;margin:14px 0 8px">Bony Landmarks</h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Landmark</th><th>Definition</th><th>Example</th></tr>
+      <tr><td><strong>Body/Shaft (Diaphysis)</strong></td><td>Main/largest section of a long bone</td><td>Shaft of femur or humerus</td></tr>
+      <tr><td><strong>Head</strong></td><td>Rounded prominent extension forming part of a joint</td><td>Head of the femur (hip joint)</td></tr>
+      <tr><td><strong>Condyle</strong></td><td>Rounded surface providing structural support for a joint</td><td>Medial condyle of femur</td></tr>
+      <tr><td><strong>Epicondyle</strong></td><td>Prominence atop a condyle — attaches muscle and connective tissue</td><td>Medial/lateral epicondyle of humerus</td></tr>
+      <tr><td><strong>Tubercle</strong></td><td>Small rounded prominence for connective tissue attachment</td><td>Greater tubercle of humerus</td></tr>
+      <tr><td><strong>Tuberosity</strong></td><td>Moderate prominence for muscle and connective tissue attachment</td><td>Deltoid tuberosity on humerus</td></tr>
+      <tr><td><strong>Crest</strong></td><td>Raised edge — site of connective tissue muscle attachment</td><td>Iliac crest on the ilium</td></tr>
+      <tr><td><strong>Trochanter</strong></td><td>Large prominence on the side of a bone — major muscle attachment</td><td>Greater and lesser trochanters of femur</td></tr>
+      <tr><td><strong>Facet</strong></td><td>Smooth flat surface forming a gliding joint</td><td>Facet joints of the vertebrae</td></tr>
+    </table></div>
+  </div>
+
+  <!-- Topic: Cartilage, Tendons, Ligaments -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon blue">🔗</div>
+      <div class="topic-title"><h2>Cartilage, Tendons & Ligaments</h2><p>Connective structures of the musculoskeletal system</p></div>
+    </div>
+    <div class="grid">
+      <div class="card"><h3>Tendon</h3><p>A <strong>band of tough connective tissue</strong> that connects <strong>muscle to bone</strong>. Transmits the force of muscle contraction to move a bone. Example: Achilles tendon connects gastrocnemius to the calcaneus (heel bone).</p></div>
+      <div class="card"><h3>Ligament</h3><p>An <strong>elastic band of connective tissue</strong> that connects <strong>bone to bone</strong>. Provides stability to joints. Less vascular than tendons — slower to heal. Example: ACL (anterior cruciate ligament) connects femur to tibia.</p></div>
+    </div>
+    <div class="card"><h3>Cartilage</h3><p>Soft, <strong>gel-like padding between bones</strong>. Protects joints from friction and impact, facilitates movement. Types: hyaline cartilage (articular surfaces), fibrocartilage (intervertebral discs), elastic cartilage (ear). Avascular — relies on diffusion for nutrients, slow to heal.</p></div>
+    <div class="callout amber"><span class="icon">🧠</span><p><strong>Memory trick:</strong> Tendons = T for Two (Tendon → muscle To bone). Ligaments = L for Links (Links bone to bone). Cartilage = Cushion.</p></div>
+    <div class="mini-quiz" id="mq-connective">
+      <div class="mq-header"><div class="mq-title">📝 Quick Check — Connective Structures</div><div class="mq-score" id="mq-connective-score">0/2 correct</div></div>
+    </div>
+  </div>
+
+  <!-- Topic: Local vs Global Muscles -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon teal">🎯</div>
+      <div class="topic-title"><h2>Local vs Global Muscles</h2><p>Stabilisers vs movers — both matter in programming</p></div>
+    </div>
+    <div class="grid">
+      <div class="card"><h3>Local Muscles (Stabilisers)</h3><p>Deep muscles close to joints. Provide <strong>joint stability</strong>, not movement. Key for injury prevention and core function.</p><br><p style="font-size:.75rem;color:#64748b"><strong>Examples:</strong> Rotator cuff · Rhomboids · Mid/lower trapezius · Transversus abdominis · Pelvic floor · Gluteus medius &amp; minimus · External hip rotators · Vastus medialis</p></div>
+      <div class="card"><h3>Global Muscles (Movers)</h3><p>Large, superficial muscles attaching from pelvis to rib cage or limbs. <strong>Generate movement</strong> and transfer forces. These are the muscles clients primarily train.</p><br><p style="font-size:.75rem;color:#64748b"><strong>Examples:</strong> Sternocleidomastoid · Upper trapezius · Pec major · Deltoid · Latissimus dorsi · Rectus abdominis · External obliques · Erector spinae · Gluteus maximus · Hamstrings · Rectus femoris · Gastrocnemius · Soleus</p></div>
+    </div>
+    <div class="callout green"><span class="icon">✅</span><p><strong>Programming tip:</strong> A well-designed program trains BOTH. Global muscles move the weight; local muscles keep joints stable under load. Neglecting local stabilisers → injury risk.</p></div>
+  </div>
+
+  <!-- Topic: Digestive System -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon orange">🍽️</div>
+      <div class="topic-title"><h2>The Digestive System</h2><p>Processing food into energy and nutrients — 6 stages</p></div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <tr><th>#</th><th>Stage</th><th>What Happens</th></tr>
+      <tr><td>1</td><td><strong>Ingestion</strong></td><td>Taking food into the digestive tract via the mouth</td></tr>
+      <tr><td>2</td><td><strong>Propulsion</strong></td><td>Moving food through the GI tract via peristalsis (rhythmic smooth muscle contractions)</td></tr>
+      <tr><td>3</td><td><strong>Mechanical Digestion</strong></td><td>Physical breakdown — chewing in the mouth, churning in the stomach</td></tr>
+      <tr><td>4</td><td><strong>Chemical Digestion</strong></td><td>Enzymes secreted by glands break food into chemical components (proteins, fats, carbs)</td></tr>
+      <tr><td>5</td><td><strong>Absorption</strong></td><td>Nutrients move from small intestine walls into the bloodstream</td></tr>
+      <tr><td>6</td><td><strong>Defecation</strong></td><td>Waste eliminated from body via anus</td></tr>
+    </table></div>
+    <div class="grid">
+      <div class="card"><h3>Alimentary Canal</h3><p>Mouth → Pharynx → Oesophagus → Stomach → Small intestine (nutrient absorption) → Large intestine (water removal) → Rectum → Anus</p></div>
+      <div class="card"><h3>Accessory Organs</h3><p>🟡 <strong>Salivary glands</strong> — produce saliva, begin carb breakdown<br>🔴 <strong>Liver</strong> — processes absorbed nutrients, produces bile<br>🟢 <strong>Gallbladder</strong> — stores &amp; releases bile to digest fat<br>🔵 <strong>Pancreas</strong> — secretes digestive enzymes + insulin</p></div>
+    </div>
+    <div class="mini-quiz" id="mq-digestive">
+      <div class="mq-header"><div class="mq-title">📝 Quick Check — Digestive System</div><div class="mq-score" id="mq-digestive-score">0/2 correct</div></div>
+    </div>
+  </div>
+
+  <!-- Topic: Thermoregulation + Dehydration -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon rose">🌡️</div>
+      <div class="topic-title"><h2>Thermoregulation & Dehydration</h2><p>How the body maintains core temperature and why hydration matters</p></div>
+    </div>
+    <div class="callout blue"><span class="icon">📌</span><p>Normal core temperature: <strong>37°C – 38°C</strong>. The CNS monitors temperature and triggers corrective actions when it shifts.</p></div>
+    <div class="grid">
+      <div class="card"><h3>🥵 Too Hot — Cooling Mechanisms</h3><p>🌊 <strong>Sweating:</strong> Sweat glands release moisture; evaporation cools the skin<br>🩸 <strong>Vasodilation:</strong> Blood vessels widen → more blood flow to skin → heat released via radiation</p></div>
+      <div class="card"><h3>🥶 Too Cold — Warming Mechanisms</h3><p>🔒 <strong>Vasoconstriction:</strong> Blood vessels narrow → less blood to skin → heat retained near core<br>🔥 <strong>Thermogenesis:</strong> Shivering muscles + hormone release → increased metabolism → more heat</p></div>
+    </div>
+    <div class="callout rose"><span class="icon">💧</span><p><strong>Dehydration:</strong> When the body loses more water than it takes in, thermoregulation is impaired. Sweating requires water — a dehydrated body cannot cool itself effectively. Water in blood also absorbs and moves heat to vital organs when conserving warmth. As a PT, ensure clients <strong>remain hydrated throughout exercise</strong>.</p></div>
+  </div>
+
+  <!-- Topic: All Systems + Homeostasis -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon teal">⚖️</div>
+      <div class="topic-title"><h2>All Systems Work Together — Homeostasis</h2><p>No system works in isolation</p></div>
+    </div>
+    <div class="callout green"><span class="icon">🔄</span><p><strong>Homeostasis</strong> is the body's maintenance of a stable internal environment. All organ systems rely on each other to keep it balanced.</p></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>System A</th><th>Depends on System B</th><th>For</th></tr>
+      <tr><td>Respiratory</td><td>Cardiovascular</td><td>Delivering oxygen it gathers to working cells</td></tr>
+      <tr><td>Cardiovascular</td><td>Respiratory</td><td>Oxygen supply to the heart muscle itself</td></tr>
+      <tr><td>Cardiovascular</td><td>Digestive</td><td>Picking up absorbed nutrients from the small intestine</td></tr>
+      <tr><td>Musculoskeletal</td><td>Nervous</td><td>Controlling muscle contractions and joint position</td></tr>
+      <tr><td>Nervous</td><td>Cardiovascular</td><td>Constant supply of oxygen-rich blood to the brain</td></tr>
+      <tr><td>Skeletal</td><td>Urinary</td><td>Removing waste products produced by bone cells</td></tr>
+    </table></div>
+  </div>
+
+  <!-- Topic: Forces & Levers -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon blue">⚙️</div>
+      <div class="topic-title"><h2>Forces, Levers & Sources of Resistance</h2><p>The mechanics behind how the body moves and what it works against</p></div>
+    </div>
+    <h3 style="font-size:.86rem;font-weight:700;color:#1e293b;margin-bottom:8px">4 Forces During Exercise</h3>
+    <div class="grid">
+      <div class="card"><h3>1. Gravitational Force</h3><p>The downward pull of gravity on the body, proportional to mass. Acts on every movement — especially important in resistance training.</p></div>
+      <div class="card"><h3>2. Ground-Reaction Force</h3><p>Force exerted by the ground back on the body in contact with it. Equal and opposite to the gravitational force (Newton's 3rd Law).</p></div>
+      <div class="card"><h3>3. Muscle Force</h3><p>The force skeletal muscle pulls on bones during contraction — creates movement at joints.</p></div>
+      <div class="card"><h3>4. Joint-Reaction Force</h3><p>Force generated within a joint in response to all other forces acting on it. High joint-reaction forces can cause injury if not managed.</p></div>
+    </div>
+    <h3 style="font-size:.86rem;font-weight:700;color:#1e293b;margin:14px 0 8px">3 Classes of Levers</h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Class</th><th>Order</th><th>Advantage</th><th>Body Example</th></tr>
+      <tr><td><strong>1st Class</strong></td><td>Effort — Fulcrum — Load</td><td>Depends on position; rare in body</td><td>Triceps extension (elbow joint = fulcrum between triceps and load)</td></tr>
+      <tr><td><strong>2nd Class</strong></td><td>Fulcrum — Load — Effort</td><td>Mechanical advantage (power)</td><td>Calf raise — toes = fulcrum, body weight = load, calf = effort</td></tr>
+      <tr><td><strong>3rd Class</strong></td><td>Fulcrum — Effort — Load</td><td>Mechanical disadvantage (speed &amp; range)</td><td>Bicep curl — elbow = fulcrum, bicep = effort between fulcrum and weight</td></tr>
+    </table></div>
+    <div class="callout blue"><span class="icon">💡</span><p>Most skeletal muscles in the body operate as <strong>3rd class levers</strong> — trading mechanical disadvantage for greater <strong>speed and range of motion</strong>. Clients with shorter limbs have a mechanical advantage in strength training (shorter range of motion).</p></div>
+    <h3 style="font-size:.86rem;font-weight:700;color:#1e293b;margin:14px 0 8px">Sources of Resistance</h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Source</th><th>Description</th></tr>
+      <tr><td><strong>Gravity</strong></td><td>Downward pull on any object — foundation of free weight training</td></tr>
+      <tr><td><strong>Weight Stack Machines</strong></td><td>Use pulleys, cams, cables and gears to control direction and resistance pattern</td></tr>
+      <tr><td><strong>Free Weights</strong></td><td>Barbells, dumbbells, bodyweight — provide functional resistance through varied planes</td></tr>
+      <tr><td><strong>Inertia</strong></td><td>Resistance to changing state of motion — important in explosive and speed-based training</td></tr>
+      <tr><td><strong>Friction</strong></td><td>Resisting force between surfaces — used in sled pushes, cable machines</td></tr>
+      <tr><td><strong>Elasticity</strong></td><td>Resistance proportional to stretch distance — resistance bands (e.g. TheraBand)</td></tr>
+    </table></div>
+    <div class="mini-quiz" id="mq-forces">
+      <div class="mq-header"><div class="mq-title">📝 Quick Check — Forces & Levers</div><div class="mq-score" id="mq-forces-score">0/2 correct</div></div>
+    </div>
+  </div>
+
+  <!-- Topic: Exercise Effects (expanded) -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon green">📊</div>
+      <div class="topic-title"><h2>Effects of Exercise on the Body</h2><p>Short-term (acute) and long-term (3+ months) responses</p></div>
+    </div>
+    <h3 style="font-size:.86rem;font-weight:700;color:#0369a1;margin-bottom:8px">Short-Term Effects</h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Body Area</th><th>Aerobic Conditioning</th><th>Resistance Training</th></tr>
+      <tr><td><strong>Blood Pressure</strong></td><td>Immediate ↑ in systolic BP during exercise; lowers after</td><td>Improves blood flow; ↑ blood fat metabolism</td></tr>
+      <tr><td><strong>Cardiorespiratory</strong></td><td>↑ oxygen uptake; ↑ heart rate during &amp; after</td><td>Improves HR and breathing rate efficiency</td></tr>
+      <tr><td><strong>Muscles</strong></td><td>↑ muscle temperature; improves flexibility</td><td>Stimulates use of O₂; stimulates muscle development</td></tr>
+      <tr><td><strong>Bones &amp; Joints</strong></td><td>Eases joint stiffness; stimulates joint lubrication</td><td>Promotes joint stability; reduces stiffness</td></tr>
+      <tr><td><strong>Neuromuscular</strong></td><td>↑ oxygen output to muscles; faster brain activity</td><td>↑ muscle contractions in response to stimuli</td></tr>
+    </table></div>
+    <h3 style="font-size:.86rem;font-weight:700;color:#059669;margin:14px 0 8px">Long-Term Effects (3+ months)</h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Body Area</th><th>Aerobic Conditioning</th><th>Resistance Training</th></tr>
+      <tr><td><strong>Blood Pressure</strong></td><td>↑ efficiency of blood circulation; lower risk of hypertension</td><td>Reduce blood lipids; reduce cholesterol build-up</td></tr>
+      <tr><td><strong>Cardiorespiratory</strong></td><td>Lower resting HR; ↑ muscle efficiency to use O₂</td><td>More efficient blood flow; prevent blood clotting conditions</td></tr>
+      <tr><td><strong>Muscles</strong></td><td>↑ size of Type I fibres; ↑ speed of development</td><td>↑ muscle mass (hypertrophy); ↑ tendon &amp; ligament strength</td></tr>
+      <tr><td><strong>Bones &amp; Joints</strong></td><td>↑ joint lubrication; ↑ joint stability</td><td>↑ bone density; ↑ joint flexibility</td></tr>
+      <tr><td><strong>Neuromuscular</strong></td><td>↑ mitochondria; ↑ energy output</td><td>↑ muscle activation for power; ↑ rate of force development</td></tr>
+    </table></div>
+    <div class="callout amber"><span class="icon">📌</span><p><strong>Atrophy</strong> = decrease in size due to disuse ("use it or lose it"). <strong>Hypertrophy</strong> = increase in size from resistance overload. All living tissue responds to the use-it-or-lose-it rule — bones, muscles, heart, and lungs all adapt to the stimulus placed on them.</p></div>
+  </div>
+
+  <!-- Topic: Sex & Age Variations -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon rose">👥</div>
+      <div class="topic-title"><h2>Sex & Age Variations in Exercise</h2><p>Physiological differences that shape exercise prescription</p></div>
+    </div>
+    <h3 style="font-size:.86rem;font-weight:700;color:#1e293b;margin-bottom:8px">Male vs Female Differences</h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Characteristic</th><th>Males</th><th>Females</th></tr>
+      <tr><td>Skeletal muscle quantity</td><td>Greater — contributes to higher max strength</td><td>Less — lower absolute strength</td></tr>
+      <tr><td>Muscle fibre composition</td><td>More Type II fibres — more powerful contractions</td><td>More Type I dominant — more fatigue-resistant</td></tr>
+      <tr><td>Lung size &amp; VO₂ max</td><td>Larger lungs, higher VO₂ max</td><td>Smaller lungs and airways; lower VO₂ max</td></tr>
+      <tr><td>Motor units</td><td>Higher proportion of high-threshold motor units — more forceful contractions</td><td>Lower threshold motor units predominate</td></tr>
+      <tr><td>Haemoglobin</td><td>Higher concentration — more efficient O₂ transport</td><td>Lower haemoglobin levels</td></tr>
+      <tr><td>Capillary density</td><td>Lower</td><td>More capillaries in muscles → greater fatigue resistance</td></tr>
+    </table></div>
+    <h3 style="font-size:.86rem;font-weight:700;color:#1e293b;margin:14px 0 8px">Age-Related Physiological Changes</h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Change</th><th>Impact on Exercise Prescription</th></tr>
+      <tr><td>↓ Cardiac output + ↑ blood pressure</td><td>Less blood/oxygen to muscles — reduce intensity, monitor HR</td></tr>
+      <tr><td>Impaired gas exchange, ↓ vital capacity</td><td>Client takes in less O₂ — favour aerobic over anaerobic</td></tr>
+      <tr><td>↑ Fat deposits in muscle tissue</td><td>Muscle fibres shrink, space filled with fat — prioritise resistance training</td></tr>
+      <tr><td>↑ Muscle tissue rigidity</td><td>Muscles stiffer/less flexible — increase warm-up time, include mobility work</td></tr>
+      <tr><td>Atrophy (loss of lean body mass)</td><td>↓ strength, size, power, speed — resistance training essential</td></tr>
+      <tr><td>↓ Connective tissue elasticity</td><td>Tendons/ligaments tighter — avoid ballistic movements, slow progressions</td></tr>
+      <tr><td>↓ Bone mineral density</td><td>More prone to fractures — weight-bearing exercise and calcium intake important</td></tr>
+    </table></div>
+    <div class="mini-quiz" id="mq-sexage">
+      <div class="mq-header"><div class="mq-title">📝 Quick Check — Sex & Age Variations</div><div class="mq-score" id="mq-sexage-score">0/2 correct</div></div>
+    </div>
+  </div>
+
+<!-- ===== CH3 ===== -->
+<div id="ch3" class="section">
+  <span class="ch-badge ch3-badge">🏋️ Chapter 3 — Applying Knowledge</span>
+  <p style="font-size:.82rem;color:#64748b;margin-bottom:22px">Using anatomy and physiology knowledge in your day-to-day PT practice.</p>
+
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon green">🎯</div>
+      <div class="topic-title"><h2>When to Use Your A&P Knowledge</h2></div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Practice Area</th><th>How A&P Applies</th></tr>
+      <tr><td><strong>Pre-exercise Screening</strong></td><td>Explain physiological risks (e.g. high BP), advise why certain exercises are contraindicated</td></tr>
+      <tr><td><strong>Fitness Testing</strong></td><td>Explain HR/BP readings, joint flexibility results, muscle strength data to clients</td></tr>
+      <tr><td><strong>Exercise Prescription</strong></td><td>Select exercises based on muscle anatomy and goals, determine rep ranges for physiological outcomes</td></tr>
+      <tr><td><strong>Exercise Instruction</strong></td><td>Cue optimal joint/muscle ROM, explain mechanics behind posture, identify dangerous movements</td></tr>
+      <tr><td><strong>General Advice</strong></td><td>Suggest alternative exercises using muscle anatomy knowledge, give basic nutritional info from digestion knowledge</td></tr>
+    </table></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Visual Aid</th><th>What It Is</th></tr>
+      <tr><td><strong>Exercise Placards</strong></td><td>Labels on gym equipment showing muscle anatomy and safe technique</td></tr>
+      <tr><td><strong>Infographics/Diagrams</strong></td><td>Single-page images + text giving an overview of an exercise and its anatomy</td></tr>
+      <tr><td><strong>Client Handouts</strong></td><td>Detailed documents explaining anatomical/physiological info for a specific exercise</td></tr>
+    </table></div>
+    <div class="mini-quiz" id="mq-applying">
+      <div class="mq-header">
+        <div class="mq-title">📝 Quick Check — Applying Knowledge</div>
+        <div class="mq-score" id="mq-applying-score">0/3 correct</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Plain Language Table -->
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon green">💬</div>
+      <div class="topic-title"><h2>Plain Language Reference</h2><p>Turn complex terms into language clients actually understand</p></div>
+    </div>
+    <div class="callout green"><span class="icon">✅</span><p>Clients follow instructions better, move more safely, and feel more confident when you use everyday language. Technical terms are for your knowledge — simple language is for theirs.</p></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Technical Term</th><th>What to Say Instead</th></tr>
+      <tr><td colspan="2" style="background:#f0fdf4;color:#15803d;font-weight:700;font-size:.75rem">PLANES OF MOTION</td></tr>
+      <tr><td>Sagittal plane movement</td><td>"Step forward / step backward / stand up / squat down"</td></tr>
+      <tr><td>Frontal plane movement</td><td>"Step out to the left/right / move back to the middle"</td></tr>
+      <tr><td>Transverse plane movement</td><td>"Rotate your chest / turn your upper body left or right while keeping feet still"</td></tr>
+      <tr><td colspan="2" style="background:#f0fdf4;color:#15803d;font-weight:700;font-size:.75rem">DIRECTIONAL TERMS</td></tr>
+      <tr><td>Superior / Inferior</td><td>"Above or upper / Lower or below"</td></tr>
+      <tr><td>Anterior / Posterior</td><td>"At the front of your body / at the back of your body"</td></tr>
+      <tr><td>Medial / Lateral</td><td>"Close to the middle of your body / away from the middle, to the side"</td></tr>
+      <tr><td>Superficial / Deep</td><td>"Closest to the skin / inside your body and away from the skin"</td></tr>
+      <tr><td colspan="2" style="background:#f0fdf4;color:#15803d;font-weight:700;font-size:.75rem">MAJOR MUSCLES</td></tr>
+      <tr><td>Pectoralis Major</td><td>"Chest"</td></tr>
+      <tr><td>Deltoids</td><td>"Shoulders"</td></tr>
+      <tr><td>Quadriceps</td><td>"Front of your thighs"</td></tr>
+      <tr><td>Hamstrings</td><td>"Back of your thighs"</td></tr>
+      <tr><td>Latissimus Dorsi</td><td>"Back or side-back muscles"</td></tr>
+      <tr><td>Trapezius</td><td>"Upper back muscles"</td></tr>
+      <tr><td>Rectus Abdominis</td><td>"Stomach muscles, abs, or six-pack"</td></tr>
+      <tr><td>Gluteus Maximus</td><td>"Glutes / buttocks"</td></tr>
+      <tr><td>Gastrocnemius</td><td>"Calves"</td></tr>
+      <tr><td colspan="2" style="background:#f0fdf4;color:#15803d;font-weight:700;font-size:.75rem">MOVEMENT TERMS</td></tr>
+      <tr><td>Flexion</td><td>"Bend your elbow/knee" or "raise your arm" or "squeeze your abs"</td></tr>
+      <tr><td>Extension</td><td>"Open up your elbow/knee" or "drop your arm"</td></tr>
+      <tr><td>Abduction / Adduction</td><td>"Move your arm/leg away from your body / back toward your body"</td></tr>
+      <tr><td>Elevation</td><td>"Shrug your shoulders"</td></tr>
+      <tr><td>Supination</td><td>"Show me your hand as if you're holding a bowl of soup"</td></tr>
+      <tr><td>Plantar flexion</td><td>"Push the ground away with your feet" or "stand up on your toes"</td></tr>
+      <tr><td>Dorsiflexion</td><td>"Pull your toes upward" or "squat down"</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- ===== CH4 ===== -->
+<div id="ch4" class="section">
+  <span class="ch-badge ch4-badge">📈 Chapter 4 — Maintaining Knowledge</span>
+  <p style="font-size:.82rem;color:#64748b;margin-bottom:22px">Strategies to update your A&P knowledge and monitor your professional practice.</p>
+
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon orange">🔄</div>
+      <div class="topic-title"><h2>Ways to Update & Expand Your Knowledge</h2></div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <tr><th>#</th><th>Method</th><th>Examples</th></tr>
+      <tr><td>1</td><td><strong>Reputable Websites</strong></td><td>BioAlive Anatomy Animations · GetBodySmart · Gray's Anatomy (online) · InnerBody · Khan Academy A&amp;P</td></tr>
+      <tr><td>2</td><td><strong>Journals</strong></td><td>Journal of Anatomy and Physiological Studies · Anatomy &amp; Physiology: Current Research · International Journal of Anatomy and Physiology</td></tr>
+      <tr><td>3</td><td><strong>Workshops &amp; Seminars</strong></td><td>FILEX (3-day fitness industry conference) · International Fitness Summit</td></tr>
+      <tr><td>4</td><td><strong>Managers &amp; Colleagues</strong></td><td>In-house training, colleagues with higher qualifications (Diploma, Degree)</td></tr>
+      <tr><td>5</td><td><strong>Professional Networking</strong></td><td>Conferences, expos, online communities — interact with exercise scientists</td></tr>
+      <tr><td>6</td><td><strong>Further Study</strong></td><td>Short courses, Certificate IV, diplomas, degrees in exercise science</td></tr>
+    </table></div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-header">
+      <div class="topic-icon orange">📋</div>
+      <div class="topic-title"><h2>Monitoring & Adjusting Practice</h2></div>
+    </div>
+    <div class="callout amber"><span class="icon">🔁</span><p>Monitoring the responses to changes you make does <strong>not end the planning cycle</strong> — it creates the beginning of a new one. Observe → Listen → Record → Evaluate → Adjust → Repeat.</p></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>Monitoring Method</th><th>What It Tells You</th></tr>
+      <tr><td><strong>Evaluating client performance changes</strong></td><td>Whether programming changes improved actual outcomes (strength, endurance, form)</td></tr>
+      <tr><td><strong>Measuring specific outcomes</strong></td><td>Quantifiable data — HR, BP, body composition, rep max — shows objective change</td></tr>
+      <tr><td><strong>Assessing progress toward goals</strong></td><td>Whether the client is on track — identify what still needs adjustment</td></tr>
+    </table></div>
+    <div class="callout green"><span class="icon">✅</span><p><strong>Key principle:</strong> Once you have new knowledge, <em>apply it</em> to programming, then <em>monitor</em> whether it produces the desired results for clients. Making ongoing education part of your role allows you to continually optimise outcomes.</p></div>
+    <div class="mini-quiz" id="mq-ch4">
+      <div class="mq-header"><div class="mq-title">📝 Quick Check — Maintaining Knowledge</div><div class="mq-score" id="mq-ch4-score">0/3 correct</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FLASHCARDS ===== -->
+<div id="flashcards" class="section">
+  <h2 style="font-size:1.05rem;font-weight:700;color:#1e293b;margin-bottom:4px">Flashcards</h2>
+  <p style="font-size:.82rem;color:#64748b;margin-bottom:14px">60 cards. Click to flip. Filter by topic.</p>
+  <div class="cat-pills" id="cat-pills"></div>
+  <div class="fc-controls">
+    <div class="fc-progress">
+      <div class="fc-prog-text" id="fc-text">Card 1 of 60</div>
+      <div class="fc-prog-bar"><div class="fc-prog-fill" id="fc-fill" style="width:2%"></div></div>
+    </div>
+    <button class="btn btn-accent" onclick="shuffleFC()">🔀 Shuffle</button>
+  </div>
+  <div class="flip-hint">👆 Tap card to reveal answer</div>
+  <div class="flip-wrap" id="flipcard" onclick="flipFC()">
+    <div class="flip-inner">
+      <div class="flip-face flip-front">
+        <span class="flip-cat" id="fc-cat-f"></span>
+        <div class="flip-label">Question</div>
+        <div class="flip-q" id="fc-q"></div>
+      </div>
+      <div class="flip-face flip-back">
+        <span class="flip-cat" id="fc-cat-b"></span>
+        <div class="flip-label">Answer</div>
+        <div class="flip-a" id="fc-a"></div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-secondary" onclick="prevFC()">← Previous</button>
+    <button class="btn btn-primary" onclick="nextFC()">Next →</button>
+  </div>
+</div>
+
+<!-- ===== FULL QUIZ ===== -->
+<div id="quiz" class="section">
+  <h2 style="font-size:1.05rem;font-weight:700;color:#1e293b;margin-bottom:4px">Full Quiz</h2>
+  <p style="font-size:.82rem;color:#64748b;margin-bottom:14px">Actual checkpoint questions from your course. Instant feedback with explanations.</p>
+  <div class="chapter-tabs">
+    <button class="pill active" onclick="setQuizFilter('all',this)">All Chapters</button>
+    <button class="pill" onclick="setQuizFilter('Ch1',this)">Ch 1</button>
+    <button class="pill" onclick="setQuizFilter('Ch2',this)">Ch 2</button>
+    <button class="pill" onclick="setQuizFilter('Ch3',this)">Ch 3</button>
+    <button class="pill" onclick="setQuizFilter('Ch4',this)">Ch 4</button>
+  </div>
+  <div id="quiz-area">
+    <div class="quiz-card">
+      <div class="q-meta">
+        <span class="q-ch-tag" id="q-ch-tag"></span>
+        <span class="q-num" id="q-num">Question 1/17</span>
+      </div>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-opts" id="q-opts"></div>
+      <div class="q-feedback" id="q-fb"></div>
+      <button class="btn btn-primary" id="btn-next-q" onclick="nextQ()" style="display:none">Next →</button>
+    </div>
+  </div>
+  <div id="quiz-result" style="display:none">
+    <div class="quiz-result">
+      <div class="result-ring">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" stroke-width="10"/>
+          <circle id="result-arc" cx="60" cy="60" r="52" fill="none" stroke="#3b82f6" stroke-width="10" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="327"/>
+        </svg>
+        <div class="result-pct" id="result-pct">0%</div>
+      </div>
+      <div class="result-msg" id="result-msg"></div>
+      <button class="btn btn-primary" onclick="restartQuiz()">Try Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MUSCLES ===== -->
+<div id="muscles" class="section">
+  <h2 style="font-size:1.05rem;font-weight:700;color:#1e293b;margin-bottom:4px">Muscle Reference</h2>
+  <p style="font-size:.82rem;color:#64748b;margin-bottom:14px">Tap any muscle to expand joints, bones, and actions.</p>
+  <div class="muscle-region-filter" id="muscle-filter"></div>
+  <div class="muscle-grid" id="muscle-grid"></div>
+</div>
+
+</div><!-- /content -->
+
+<script>
+// ======= NAV =======
+function showTab(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showTabById(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>{
+    if(t.getAttribute('onclick')&&t.getAttribute('onclick').includes("'"+id+"'"))t.classList.add('active');
+    else t.classList.remove('active');
+  });
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ======= MINI QUIZ DATA =======
+const mqs = {
+  'mq-craap':{total:2,qs:[
+    {t:"What does the 'P' in CRAAP stand for?",opts:["Peer-reviewed","Purpose","Popularity","Publication"],c:1,ex:"Purpose — why does the information exist? To inform, sell, entertain, or persuade? Identify any bias or conflict of interest."},
+    {t:"An article has no listed author, no date, and promotes a supplement. Which CRAAP criterion is MOST violated?",opts:["Currency only","Relevance only","Authority and Purpose","Accuracy only"],c:2,ex:"No author = Authority fail. Promoting a supplement = Purpose concern (possible bias/commercial interest). Both criteria are compromised."}
+  ]},
+  'mq-sources':{total:2,qs:[
+    {t:"Which is the MOST credible source for exercise science information?",opts:["A fitness influencer's Instagram post","A peer-reviewed journal article","A supplement retailer's blog","An anonymous fitness forum"],c:1,ex:"Peer-reviewed journals are reviewed by qualified experts before publication — satisfying Authority and Accuracy criteria. The others lack these safeguards."},
+    {t:"Which Australian peak body is specifically focused on exercise science and sports science professionals?",opts:["DAA (Dietitians Australia)","ESSA (Exercise & Sports Science Australia)","AMA (Australian Medical Association)","AHPA (Allied Health Professions Australia)"],c:1,ex:"ESSA — Exercise & Sports Science Australia — is the peak body specifically for exercise scientists and sports scientists. ESSA membership requires relevant qualifications."}
+  ]},
+  'mq-anatpos':{total:2,qs:[
+    {t:"In anatomical position, where are the palms facing?",opts:["Downward (toward floor)","Backward (toward wall behind you)","Forward (facing anteriorly)","Inward (toward body)"],c:2,ex:"Anatomical position: standing erect, feet together, face forward AND palms facing forward (anteriorly). This is the universal reference position."},
+    {t:"The knee is _____ to the ankle.",opts:["Distal","Inferior","Proximal","Lateral"],c:2,ex:"Proximal = closer to the point of origin. The knee is closer to the hip (origin of the leg) than the ankle, so the knee is proximal to the ankle."}
+  ]},
+  'mq-planes':{total:2,qs:[
+    {t:"A lateral raise (arm moving out to the side) occurs in which plane?",opts:["Sagittal plane","Frontal plane","Transverse plane","Oblique plane"],c:1,ex:"The frontal plane divides the body front-to-back. Abduction (moving away from midline) occurs in the frontal plane — lateral raises, side lunges, lateral pulldowns."},
+    {t:"A bicep curl occurs in which plane?",opts:["Frontal","Transverse","Sagittal","Coronal"],c:2,ex:"Sagittal plane — divides the body left and right. Flexion and extension movements (like a bicep curl) occur in the sagittal plane."}
+  ]},
+  'mq-bodyorg':{total:2,qs:[
+    {t:"Which is the SMALLEST structural unit of the body?",opts:["Cell","Molecule","Atom","Tissue"],c:2,ex:"Structural order: Atoms → Molecules → Cells → Tissues → Organs → Organ Systems → Organism. Atoms are the smallest."},
+    {t:"Which type of muscle tissue is under VOLUNTARY control?",opts:["Cardiac muscle","Smooth muscle","Skeletal muscle","Visceral muscle"],c:2,ex:"Skeletal muscle is the only voluntary muscle — consciously controlled. Cardiac and smooth/visceral muscles are both involuntary (autonomic nervous system)."}
+  ]},
+  'mq-cardio':{total:2,qs:[
+    {t:"Blood leaves the RIGHT ventricle and travels to the...",opts:["Aorta → body","Lungs via pulmonary artery","Left atrium directly","Vena cava"],c:1,ex:"Right ventricle → pulmonary valve → pulmonary artery → lungs. The blood is deoxygenated at this point. It returns oxygenated via pulmonary veins to the left atrium."},
+    {t:"Cardiac output equals:",opts:["Heart rate + stroke volume","Heart rate × stroke volume","Stroke volume ÷ heart rate","Blood pressure × heart rate"],c:1,ex:"Cardiac Output = HR × SV (Heart Rate × Stroke Volume). It represents the total volume of blood pumped per minute."}
+  ]},
+  'mq-resp':{total:2,qs:[
+    {t:"Where does gas exchange (O₂ in, CO₂ out) occur in the lungs?",opts:["Bronchi","Trachea","Alveoli","Pleural cavity"],c:2,ex:"The alveoli are ~30 million tiny cup-shaped sacs in the lungs. Their large surface area and thin walls enable O₂ to pass into blood and CO₂ to pass out."},
+    {t:"What is the normal resting respiration rate?",opts:["6–10 breaths/min","12–16 breaths/min","20–25 breaths/min","25–30 breaths/min"],c:1,ex:"Normal resting rate is 12–16 breaths per minute. Rates consistently outside this range may indicate a respiratory concern."}
+  ]},
+  'mq-energy':{total:2,qs:[
+    {t:"Which energy system provides fuel for activities lasting 0–10 seconds?",opts:["Aerobic system","Lactic system","Alactic (ATP-CP) system","All equally"],c:2,ex:"The alactic (ATP-CP) system provides immediate energy for maximal-effort activities under 10 seconds. It uses stored creatine phosphate and produces no lactate."},
+    {t:"A client wants to improve their 5km running time. Which energy system should training primarily target?",opts:["Alactic (ATP-CP)","Lactic","Aerobic","Alactic and Lactic equally"],c:2,ex:"A 5km run takes well over 2 minutes — the aerobic system dominates from about 2 minutes onwards. Training should focus on steady-state aerobic work and improving oxygen utilisation."}
+  ]},
+  'mq-musclefn':{total:2,qs:[
+    {t:"The Pectoralis Major creates which movement?",opts:["Knee extension and hip flexion","Adduction of shoulder, internal rotation & horizontal flexion","Elbow flexion and shoulder extension","Scapular retraction and depression"],c:1,ex:"The pec major is the large chest muscle. It pulls the arm across the body (adduction), rotates the humerus inward (internal rotation), and pulls the arm horizontally forward (horizontal flexion)."},
+    {t:"Which muscle fibre type is MOST suited for a marathon runner?",opts:["Type IIb (fast-twitch)","Type IIa (intermediate)","Type I (slow-twitch)","Type IIx (power)"],c:2,ex:"Type I (slow-twitch) fibres are fatigue-resistant and aerobic — perfect for sustained endurance activities like marathon running. They have abundant mitochondria and are highly efficient."}
+  ]},
+  'mq-injury':{total:2,qs:[
+    {t:"A client gradually develops pain in their shoulder after weeks of heavy overhead pressing. This is MOST likely which type of injury?",opts:["Direct injury","Acute injury","Overuse injury","Primary injury from a fall"],c:2,ex:"Overuse injuries result from repeated micro-trauma with no single causative event. Gradual onset pain from repetitive training is a classic presentation of an overuse injury."},
+    {t:"Which is an evidence-based injury PREVENTION technique for gym clients?",opts:["Encouraging max load every session to build strength quickly","Skipping warm-up to save time","Using correct form before increasing weight","Avoiding core exercises as they increase injury risk"],c:2,ex:"Correct form before increasing weight is foundational to injury prevention. Form faults under load are a leading cause of gym injuries."}
+  ]},
+  'mq-applying':{total:3,qs:[
+    {t:"Which BEST demonstrates applying anatomical knowledge in practice?",opts:["Prescribing the same program to all clients","Adjusting exercise selection based on joint function and muscle anatomy","Following only popular online workouts","Avoiding technical terms entirely"],c:1,ex:"Applying A&P means tailoring programs to each client's individual joint function, muscle anatomy, and movement capacity — not a generic approach."},
+    {t:"Which strategy MOST reduces injury risk during client training?",opts:["Skipping warm-up to save time","Max loads immediately to accelerate adaptation","Ignoring signs of discomfort to push through","Evidence-based technique and safe range of motion"],c:3,ex:"Evidence-based technique + safe ROM are foundational. The other options all significantly increase injury risk."},
+    {t:"An exercise placard displayed on gym equipment is an example of which type of visual aid?",opts:["Client handout","Infographic/Diagram","Exercise placard","Educational poster"],c:2,ex:"An exercise placard is specifically a label or information panel on gym equipment showing musculoskeletal anatomy and safe technique."}
+  ]},
+  'mq-bodycav':{total:2,qs:[
+    {t:"Which body cavity contains the heart and lungs?",opts:["Abdominal cavity","Pelvic cavity","Thoracic cavity","Dorsal cavity"],c:2,ex:"The thoracic cavity is located in the chest, above the diaphragm, and houses the heart, lungs, trachea and oesophagus. It is separated from the abdominal cavity by the diaphragm."},
+    {t:"The brain and spinal cord are housed together in which cavity?",opts:["Thoracic cavity","Dorsal cavity","Pelvic cavity","Abdominal cavity"],c:1,ex:"The dorsal cavity is on the posterior side of the body and contains the CNS. It has two subdivisions: the cranial cavity (brain) and the spinal cavity (spinal cord)."}
+  ]},
+  'mq-connective':{total:2,qs:[
+    {t:"A tendon connects:",opts:["Bone to bone","Muscle to muscle","Muscle to bone","Cartilage to bone"],c:2,ex:"Tendons are tough bands of connective tissue that connect muscle to bone, transmitting the force of muscle contraction to produce joint movement. Example: Achilles tendon."},
+    {t:"Which connective tissue connects bone to bone and provides joint stability?",opts:["Tendon","Cartilage","Fascia","Ligament"],c:3,ex:"Ligaments are elastic bands of connective tissue that connect bone to bone and provide stability to joints. They are less vascular than tendons and heal more slowly."}
+  ]},
+  'mq-digestive':{total:2,qs:[
+    {t:"In which digestive organ does the majority of nutrient absorption occur?",opts:["Stomach","Large intestine","Small intestine","Liver"],c:2,ex:"The small intestine is where nutrients (carbohydrates, proteins, fats) are absorbed through the intestinal wall into the bloodstream after chemical and mechanical digestion."},
+    {t:"What is the correct order of the first 3 stages of digestion?",opts:["Absorption → Propulsion → Ingestion","Ingestion → Propulsion → Mechanical Digestion","Chemical Digestion → Ingestion → Absorption","Mechanical Digestion → Ingestion → Propulsion"],c:1,ex:"The 6 stages in order: 1) Ingestion (food enters mouth) → 2) Propulsion (peristalsis moves food) → 3) Mechanical digestion (chewing/churning) → 4) Chemical digestion → 5) Absorption → 6) Defecation."}
+  ]},
+  'mq-forces':{total:2,qs:[
+    {t:"Which class of lever is MOST common in the human body?",opts:["1st class (fulcrum between effort and load)","2nd class (load between fulcrum and effort)","3rd class (effort between fulcrum and load)","All three equally"],c:2,ex:"3rd class levers (effort between fulcrum and load) are most common in the body. They operate at a mechanical disadvantage but provide greater speed and range of motion. Example: bicep curl — elbow (fulcrum), bicep (effort), weight (load)."},
+    {t:"During a squat, the force exerted by the ground back upward on your feet is called:",opts:["Gravitational force","Muscle force","Ground-reaction force","Joint-reaction force"],c:2,ex:"Ground-reaction force is the force exerted by the ground on a body in contact with it — equal and opposite to the gravitational force per Newton's 3rd Law. It acts upward during standing and squatting."}
+  ]},
+  'mq-sexage':{total:2,qs:[
+    {t:"Compared to males, females tend to have:",opts:["More Type II muscle fibres","Higher haemoglobin concentration","More muscle capillaries and greater fatigue resistance","Larger lung capacity"],c:2,ex:"Females tend to be Type I muscle fibre dominant, which means more capillaries in their muscles and greater fatigue resistance. Males have more Type II fibres, higher haemoglobin, and larger lung capacity."},
+    {t:"Which age-related change MOST directly justifies including resistance training for older clients?",opts:["Increased blood pressure","Reduced lung volume","Atrophy — loss of lean muscle mass and bone density","Increased muscle flexibility"],c:2,ex:"Atrophy (loss of lean body mass including muscle and bone density) is a key age-related change. Resistance training directly combats muscle loss, increases bone density, and maintains strength, power and functional capacity in older clients."}
+  ]},
+  'mq-ch4':{total:3,qs:[
+    {t:"Which is the BEST example of maintaining and updating professional knowledge?",opts:["Relying on your initial qualification only","Attending accredited workshops and reviewing new exercise science research","Using outdated resources because they are accessible","Following unverified trends without checking sources"],c:1,ex:"Accredited workshops and reviewing current research are the gold standard for professional development. Outdated resources and unverified trends risk client safety and your professional reputation."},
+    {t:"Why is it important to monitor and adjust your professional practice?",opts:["To align with client needs, new evidence, and safe practice standards","To ensure programs are fashionable","To avoid documenting client results","To reduce communication with colleagues"],c:0,ex:"Monitoring ensures programs remain effective, evidence-based, and safe. Fashion, avoiding documentation, and limiting communication are all contrary to professional standards."},
+    {t:"What is the MOST effective way to monitor whether your programming changes are working?",opts:["Evaluating, measuring and assessing the client's changes in performance","Reviewing your own performance monthly","Asking friends and family for feedback","Comparing your clients' results to your peers' clients"],c:0,ex:"Objectively evaluating, measuring, and assessing actual client performance changes gives the most direct, valid feedback. It answers: did this change produce the outcome I expected for this client?"}
+  ]}
+};
+
+// Render mini quizzes
+Object.keys(mqs).forEach(id=>{
+  const el=document.getElementById(id);
+  if(!el)return;
+  const data=mqs[id];
+  data.answered=0;data.correct=0;
+  data.qs.forEach((q,qi)=>{
+    const div=document.createElement('div');
+    div.className='mq-q';div.id=`${id}-q${qi}`;
+    div.innerHTML=`<div class="mq-text">${qi+1}. ${q.t}</div>
+    <div class="mq-opts">${q.opts.map((o,oi)=>`<button class="mq-opt" onclick="answerMQ('${id}',${qi},${oi})" id="${id}-q${qi}-o${oi}">${o}</button>`).join('')}</div>
+    <div class="mq-explain" id="${id}-q${qi}-ex">${q.ex}</div>`;
+    el.appendChild(div);
+  });
+  const pass=document.createElement('div');
+  pass.className='mq-pass';pass.id=`${id}-pass`;
+  pass.innerHTML='✅ Section complete!';
+  el.appendChild(pass);
+});
+
+function answerMQ(id,qi,oi){
+  const data=mqs[id];const q=data.qs[qi];
+  const prefix=`${id}-q${qi}`;
+  for(let i=0;i<q.opts.length;i++){
+    const btn=document.getElementById(`${prefix}-o${i}`);
+    btn.classList.add('locked');
+    if(i===q.c)btn.classList.add('correct');
+    else if(i===oi&&oi!==q.c)btn.classList.add('wrong');
+  }
+  document.getElementById(`${prefix}-ex`).classList.add('show');
+  if(!data.qs[qi].done){
+    data.qs[qi].done=true;data.answered++;
+    if(oi===q.c)data.correct++;
+    document.getElementById(`${id}-score`).textContent=`${data.correct}/${data.answered} correct`;
+    if(data.answered===data.total)document.getElementById(`${id}-pass`).classList.add('show');
+  }
+}
+
+// ======= FLASHCARD DATA =======
+const allCards=[
+  {q:"What does the 'C' in CRAAP stand for?",a:"Currency — how recent is the information? Generally within 5 years for exercise science.",cat:"CRAAP"},
+  {q:"What does the 'R' in CRAAP stand for?",a:"Relevance — does it relate to your topic? Is it appropriate for your purpose and level?",cat:"CRAAP"},
+  {q:"What does 'Authority' mean in CRAAP?",a:"Who wrote it? Are they qualified? Affiliated with a peak body, government, or university? Check credentials.",cat:"CRAAP"},
+  {q:"What does 'Accuracy' mean in CRAAP?",a:"Is it evidence-based? Does it cite credible sources? Can it be verified in at least 2 other credible sources?",cat:"CRAAP"},
+  {q:"What does 'Purpose' mean in CRAAP?",a:"Why does this information exist? To inform, sell, entertain, or persuade? Identify bias or conflicts of interest.",cat:"CRAAP"},
+  {q:"Name 4 credible source types for exercise science.",a:"1. Peer-reviewed journals\n2. Academic databases (Google Scholar, JSTOR, ERIC)\n3. Government/educational websites (.gov.au, .edu)\n4. Australian peak bodies (ESSA, AusActive, SMA)",cat:"CRAAP"},
+  {q:"What does 'Anterior' mean?",a:"Toward the front of the body.\nExample: The chest is anterior to the spine.",cat:"Directional Terms"},
+  {q:"What does 'Posterior' mean?",a:"Toward the back of the body.\nExample: Glutes are posterior to the hip joint.",cat:"Directional Terms"},
+  {q:"What does 'Superior' mean?",a:"Above / toward the head.\nExample: Lungs are superior to the diaphragm.",cat:"Directional Terms"},
+  {q:"What does 'Inferior' mean?",a:"Below / toward the feet.\nExample: The knee is inferior to the hip.",cat:"Directional Terms"},
+  {q:"What does 'Medial' mean?",a:"Toward the midline of the body.\nExample: The big toe is on the medial side of the foot.",cat:"Directional Terms"},
+  {q:"What does 'Lateral' mean?",a:"Away from the midline.\nExample: The arms are lateral to the trunk.",cat:"Directional Terms"},
+  {q:"What does 'Proximal' mean?",a:"Closer to the point of origin.\nExample: The elbow is proximal to the wrist.",cat:"Directional Terms"},
+  {q:"What does 'Distal' mean?",a:"Further from origin.\nExample: The hand is distal to the elbow.",cat:"Directional Terms"},
+  {q:"What is the Sagittal plane?",a:"Divides the body into left and right halves.\nMovements: flexion, extension.\nExamples: squat, lunge, bicep curl.",cat:"Planes & Axes"},
+  {q:"What is the Frontal (Coronal) plane?",a:"Divides the body into front and back.\nMovements: abduction, adduction.\nExamples: lateral raise, side lunge.",cat:"Planes & Axes"},
+  {q:"What is the Transverse plane?",a:"Divides the body into upper and lower halves.\nMovements: rotation, supination, pronation.\nExamples: trunk rotation, golf swing.",cat:"Planes & Axes"},
+  {q:"A bicep curl occurs in which plane?",a:"Sagittal plane — elbow flexion/extension is a forward-backward movement.",cat:"Planes & Axes"},
+  {q:"What is the correct structural order of the body?",a:"Atoms → Molecules → Cells → Tissues → Organs → Organ Systems → Organism",cat:"Body Structure"},
+  {q:"Name the 4 types of body tissue.",a:"1. Epithelial — covers surfaces, secretion\n2. Connective — support (bone, cartilage, blood)\n3. Muscle — skeletal, smooth, cardiac\n4. Nervous — receives stimuli, conducts impulses",cat:"Body Structure"},
+  {q:"What are the 3 types of synovial joints with the widest movement?",a:"1. Ball & socket — hip, shoulder (multi-axial, most movement)\n2. Hinge — elbow, knee (uniaxial, flexion/extension only)\n3. Condyloid — wrist (all planar movements except rotation)",cat:"Joints"},
+  {q:"Name the 6 types of synovial joints.",a:"1. Ball & socket (hip, shoulder)\n2. Hinge (elbow, knee)\n3. Pivot (atlas-axis neck rotation)\n4. Condyloid (wrist)\n5. Gliding (wrist/ankle bones)\n6. Saddle (thumb CMC joint)",cat:"Joints"},
+  {q:"Define Flexion vs Extension.",a:"Flexion = angle between bones decreases (e.g. bending elbow).\nExtension = angle between bones increases (e.g. straightening knee).",cat:"Joint Actions"},
+  {q:"Define Abduction vs Adduction.",a:"Abduction = movement away from midline (raising arm out to side).\nAdduction = movement toward midline (bringing arm back to body).",cat:"Joint Actions"},
+  {q:"What is Plantar flexion vs Dorsiflexion?",a:"Plantar flexion = pointing the toes / pushing foot down.\nDorsiflexion = pulling toes upward toward shin.",cat:"Joint Actions"},
+  {q:"What is Supination vs Pronation?",a:"Supination = palm faces upward (hold a bowl of 'SOUP').\nPronation = palm faces downward/backward.",cat:"Joint Actions"},
+  {q:"What is a Concentric contraction?",a:"Muscle shortens under load.\nExample: lifting phase of bicep curl — bicep shortens as elbow flexes.",cat:"Muscle Function"},
+  {q:"What is an Eccentric contraction?",a:"Muscle lengthens under load.\nExample: lowering phase of bicep curl. Causes DOMS (delayed onset muscle soreness).",cat:"Muscle Function"},
+  {q:"What is an Isometric contraction?",a:"Muscle generates force with no change in length.\nExamples: plank, wall sit, holding a heavy bag still.",cat:"Muscle Function"},
+  {q:"Name the 4 roles muscles play.",a:"1. Prime mover (agonist) — causes movement\n2. Antagonist — opposes and reverses movement\n3. Synergist — assists prime mover\n4. Fixator/Stabiliser — holds body position",cat:"Muscle Function"},
+  {q:"Describe the 3 muscle fibre types.",a:"Type I (slow-twitch) — aerobic, fatigue-resistant, endurance\nType IIa (intermediate) — both aerobic & anaerobic\nType IIb (fast-twitch) — powerful, quick to fatigue, anaerobic",cat:"Muscle Function"},
+  {q:"Name the 3 energy systems and their duration.",a:"1. Alactic (ATP-CP) — 0 to 10 seconds, anaerobic\n2. Lactic — 10 sec to 2 min, anaerobic, produces lactate\n3. Aerobic — 2 min+, uses oxygen",cat:"Energy Systems"},
+  {q:"What is ATP?",a:"Adenosine Triphosphate — the universal energy currency of the body. Like petrol for a car. All 3 energy systems produce ATP for muscles to use.",cat:"Energy Systems"},
+  {q:"How do you train the Alactic (ATP-CP) system?",a:"Max-effort activities lasting ≤12 seconds. Allow long rest (up to 5 min) for full creatine phosphate recovery.",cat:"Energy Systems"},
+  {q:"What is 'steady state' exercise?",a:"When energy expenditure equals energy required. Intensity must remain constant.\nExample: 45-min jog at consistent pace — aerobic system dominant.",cat:"Energy Systems"},
+  {q:"What are HR, SV, and Cardiac Output?",a:"HR = beats per minute\nSV = volume per beat (plateaus ~50% max HR)\nCardiac Output = HR × SV (litres per minute)",cat:"Cardiovascular"},
+  {q:"Describe blood flow through the heart.",a:"Vena cava → Right atrium → Tricuspid valve → Right ventricle → Pulmonary artery → Lungs → Pulmonary veins → Left atrium → Mitral valve → Left ventricle → Aorta → Body",cat:"Cardiovascular"},
+  {q:"What is normal blood pressure?",a:"120/80 mmHg (120 systolic / 80 diastolic). ±10% acceptable. Resting HR: 60–80 bpm.",cat:"Cardiovascular"},
+  {q:"Where does gas exchange occur in the lungs?",a:"In the alveoli — ~30 million tiny sacs. Thin walls and large surface area allow O₂ into blood and CO₂ out.",cat:"Respiratory"},
+  {q:"What controls breathing rate?",a:"The respiratory centre at the base of the brain. Sensory organs monitor blood CO₂ — high CO₂ triggers deeper/faster breathing.",cat:"Respiratory"},
+  {q:"What is the Stretch Reflex?",a:"Muscle spindles detect overstretching and trigger a contraction to prevent muscle tears. Antagonist simultaneously relaxes. Protective mechanism.",cat:"Nervous System"},
+  {q:"What is the Golgi-Tendon Reflex?",a:"Detects excessive tension in tendons → inhibits further contraction to protect against muscle/tendon injury. Opposite to stretch reflex.",cat:"Nervous System"},
+  {q:"How does the body cool down when overheated?",a:"1. Sweating — evaporation cools skin\n2. Vasodilation — blood vessels widen, increasing blood flow to skin to release heat",cat:"Body Regulation"},
+  {q:"Name the 5 bone shapes with examples.",a:"Long — femur, humerus (levers)\nShort — wrist/ankle (stability)\nFlat — skull, ribs (protection)\nIrregular — vertebrae (complex structure)\nSesamoid — patella (protects tendon)",cat:"Skeletal System"},
+  {q:"Axial vs Appendicular skeleton — how many bones each?",a:"Axial: 80 bones (skull, ribs, sternum, vertebral column — head/neck/trunk)\nAppendicular: 126 bones (limbs + pectoral & pelvic girdles)",cat:"Skeletal System"},
+  {q:"Name 3 effects of long-term aerobic training.",a:"• Increased cardiac output (stronger heart)\n• Reduced resting HR\n• Increased VO2 max\n• Improved capillary density in muscles",cat:"Exercise Effects"},
+  {q:"Name 3 effects of long-term resistance training.",a:"• Increased muscle mass (hypertrophy)\n• Increased bone density\n• Greater tendon and ligament strength\n• Increased rate of force development",cat:"Exercise Effects"},
+  {q:"What is atrophy vs hypertrophy?",a:"Atrophy = decrease in muscle size (disuse — 'use it or lose it')\nHypertrophy = increase in muscle size (result of resistance training overload)",cat:"Exercise Effects"},
+  {q:"Name 4 dangerous positions to avoid in exercise.",a:"1. Vertebral column out of alignment under load\n2. Shoulder in posterior/inferior position under heavy load\n3. Shearing forces on knee (ACL risk)\n4. Behind-neck movements that break spinal alignment",cat:"Injury & Safety"},
+  {q:"What are the 5 injury prevention techniques?",a:"1. Proper warm-up every session\n2. Correct form before increasing load\n3. Core strengthening\n4. Balanced programming (opposing muscle groups)\n5. Avoid risky/dangerous movements",cat:"Injury & Safety"},
+  {q:"What is a Type I slow-twitch muscle fibre best trained with?",a:"Light weights, slow tempo, high reps (15+). Circuit training, bodyweight. Short rest ~30s. Targets aerobic metabolism and endurance capacity.",cat:"Muscle Function"},
+  {q:"How do you train Type IIb fast-twitch fibres?",a:"Heavy weights or explosive movements, low reps (2–6). Long rest (60–90s). Targets ATP-CP anaerobic system. Power and strength training.",cat:"Muscle Function"},
+  {q:"Name 5 Australian peak bodies in fitness/health.",a:"• ESSA — Exercise & Sports Science Australia\n• AusActive — fitness professionals\n• SMA — Sports Medicine Australia\n• DAA — Dietitians Australia\n• AHPA — Allied Health Professions Australia",cat:"CRAAP"},
+  {q:"What happens to stroke volume as exercise intensity rises?",a:"SV rises to around 50–60% of max HR, then plateaus. Further increases in cardiac output come from increased heart rate.",cat:"Cardiovascular"},
+  {q:"What is the difference between local and global muscles?",a:"Local muscles: deep stabilisers attached near vertebrae — maintain spinal alignment under load (e.g. multifidus).\nGlobal muscles: large movers — generate force for movement (e.g. rectus abdominis, lats).",cat:"Muscle Function"},
+  {q:"What are the 3 categories of joints?",a:"1. Fibrous — immovable (skull sutures)\n2. Cartilaginous — limited movement (intervertebral discs)\n3. Synovial — freely movable (hip, knee, elbow)",cat:"Joints"},
+  {q:"What are the 4 stages of injury prevention?",a:"1. Pre-exercise screening (identify risks)\n2. Warm-up and cool-down\n3. Evidence-based technique\n4. Balanced, progressive programming",cat:"Injury & Safety"},
+  {q:"What is 'Vital Capacity' of the lungs?",a:"The maximum volume of air that can be exhaled after a maximal inhalation. Important measure of respiratory function; improves with aerobic training.",cat:"Respiratory"},
+  {q:"Describe the path of air into the lungs.",a:"Nose/Mouth → Pharynx → Larynx (voice box) → Trachea → Bronchi → Bronchioles → Alveoli (gas exchange)",cat:"Respiratory"},
+  {q:"What are the 3 types of levers and their classes?",a:"1st class: fulcrum between force and load (e.g. head nodding)\n2nd class: load between fulcrum and force (e.g. calf raise)\n3rd class: force between fulcrum and load (most muscles — e.g. bicep curl)",cat:"Body Structure"},
+  {q:"Name the 5 body cavities.",a:"1. Dorsal — contains brain and spinal cord (CNS)\n2. Cranial — within skull, protects brain\n3. Thoracic — chest (heart, lungs)\n4. Abdominal — stomach, intestines, kidneys\n5. Pelvic — bladder, reproductive organs",cat:"Body Structure"},
+  {q:"What is the difference between lordosis, kyphosis, and scoliosis?",a:"Lordosis = forward (anterior) spinal curve — normal in cervical and lumbar regions\nKyphosis = backward (posterior) curve — normal in thoracic and sacral regions\nScoliosis = abnormal lateral (sideways) curve — always a disorder",cat:"Skeletal System"},
+  {q:"What exercise helps correct excessive thoracic kyphosis?",a:"Seated cable rows — strengthen the upper back muscles (rhomboids, mid-trapezius) that pull the shoulders back.\nWinged scapula (associated with kyphosis) → dumbbell pullover.",cat:"Skeletal System"},
+  {q:"What is the difference between a tendon and a ligament?",a:"Tendon = connects MUSCLE to BONE (transmits force)\nLigament = connects BONE to BONE (provides joint stability)\nCartilage = gel-like padding between bones (reduces friction, absorbs shock)",cat:"Body Structure"},
+  {q:"What is the Sartorius and what makes it notable?",a:"The Sartorius is the LONGEST muscle in the human body. Runs diagonally across the front of the thigh.\nJoint: Knee & Hip\nActions: Hip flexion, abduction & lateral rotation of femur, knee flexion",cat:"Muscle Function"},
+  {q:"Name the 6 stages of digestion in order.",a:"1. Ingestion — food enters mouth\n2. Propulsion — peristalsis moves food through GI tract\n3. Mechanical digestion — chewing, churning\n4. Chemical digestion — enzymes break down food\n5. Absorption — nutrients absorbed in small intestine\n6. Defecation — waste eliminated",cat:"Body Structure"},
+  {q:"Name the 4 accessory organs of digestion and their roles.",a:"Salivary glands — produce saliva, begin carb breakdown\nLiver — processes nutrients, produces bile\nGallbladder — stores and releases bile to digest fat\nPancreas — secretes digestive enzymes + insulin",cat:"Body Structure"},
+  {q:"Name the 4 forces that act on the body during exercise.",a:"1. Gravitational force — downward pull proportional to mass\n2. Ground-reaction force — force exerted upward by ground\n3. Muscle force — force skeletal muscle pulls on bones\n4. Joint-reaction force — force generated within joints in response to all other forces",cat:"Body Structure"},
+  {q:"How do males and females typically differ in muscle physiology?",a:"Males: more Type II fibres, more skeletal muscle, higher haemoglobin, higher VO₂ max, larger lungs\nFemales: more Type I dominant, more capillaries in muscles, greater fatigue resistance",cat:"Exercise Effects"},
+  {q:"Name 4 physiological changes that occur with ageing.",a:"1. ↓ Cardiac output + ↑ blood pressure\n2. Atrophy (loss of muscle mass + bone density)\n3. ↑ Muscle rigidity (less flexible)\n4. ↓ Connective tissue elasticity (tendons/ligaments tighter)\n5. ↓ Vital capacity (less oxygen intake)",cat:"Exercise Effects"},
+  {q:"What is homeostasis?",a:"The body's maintenance of a stable internal environment. All organ systems work together interdependently to maintain it. Disruption to one system affects all others.",cat:"Body Structure"},
+  {q:"What is the role of the Sartorius in the CRAAP test? (trick question)",a:"The Sartorius is a muscle — it has no role in CRAAP! The CRAAP test is for evaluating information sources: Currency, Relevance, Authority, Accuracy, Purpose.",cat:"CRAAP"},
+];
+
+// ======= FLASHCARD LOGIC =======
+let activeCards=[...allCards],fcIdx=0;
+const fcCats=[...new Set(allCards.map(c=>c.cat))];
+function buildFC(){
+  const cp=document.getElementById('cat-pills');
+  cp.innerHTML='<button class="pill active" onclick="filterFC(\'all\',this)">All</button>';
+  fcCats.forEach(c=>{const b=document.createElement('button');b.className='pill';b.textContent=c;b.onclick=function(){filterFC(c,this)};cp.appendChild(b)});
+  renderFC();
+}
+function renderFC(){
+  const c=activeCards[fcIdx];
+  document.getElementById('fc-q').textContent=c.q;
+  document.getElementById('fc-a').textContent=c.a;
+  document.getElementById('fc-cat-f').textContent=c.cat;
+  document.getElementById('fc-cat-b').textContent=c.cat;
+  document.getElementById('fc-text').textContent=`Card ${fcIdx+1} of ${activeCards.length}`;
+  document.getElementById('fc-fill').style.width=`${((fcIdx+1)/activeCards.length)*100}%`;
+  document.getElementById('flipcard').classList.remove('flipped');
+}
+function flipFC(){document.getElementById('flipcard').classList.toggle('flipped')}
+function nextFC(){fcIdx=(fcIdx+1)%activeCards.length;renderFC()}
+function prevFC(){fcIdx=(fcIdx-1+activeCards.length)%activeCards.length;renderFC()}
+function shuffleFC(){for(let i=activeCards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[activeCards[i],activeCards[j]]=[activeCards[j],activeCards[i]]}fcIdx=0;renderFC()}
+function filterFC(cat,btn){
+  document.querySelectorAll('.cat-pills .pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  activeCards=cat==='all'?[...allCards]:allCards.filter(c=>c.cat===cat);
+  fcIdx=0;renderFC();
+}
+
+// ======= FULL QUIZ DATA =======
+const allQuiz=[
+  {ch:'Ch1',tag:'Ch 1',color:'#7c3aed',bg:'#f5f3ff',
+   q:"Which of the following is generally the MOST credible source to inform exercise prescription?",
+   opts:["A fitness influencer's blog post","A peer-reviewed journal article from an exercise science journal","A supplement retailer's product page","An anonymous fitness forum"],
+   c:1,ex:"Peer-reviewed journals are the gold standard — reviewed by qualified experts before publication. They satisfy Authority and Accuracy criteria."},
+  {ch:'Ch1',tag:'Ch 1',color:'#7c3aed',bg:'#f5f3ff',
+   q:"Which combination provides the STRONGEST indication of a trustworthy source?",
+   opts:["Viral social media popularity","Strong personal opinions without references","Before-and-after photos","Recent publication date, peer review, and author credentials"],
+   c:3,ex:"Currency (recent date) + Accuracy (peer review) + Authority (credentials) — these three CRAAP criteria together give the strongest indicator of reliability."},
+  {ch:'Ch1',tag:'Ch 1',color:'#7c3aed',bg:'#f5f3ff',
+   q:"Which action BEST supports staying current with exercise science?",
+   opts:["Attending accredited CPD and reviewing current position stands","Copying elite athlete programs for all clients","Testing unproven methods on clients","Relying on notes from a course completed years ago"],
+   c:0,ex:"Accredited CPD and reviewing position stands from peak bodies (ESSA, AusActive) are evidence-based ways to stay current and reflect CRAAP principles."},
+  {ch:'Ch1',tag:'Ch 1',color:'#7c3aed',bg:'#f5f3ff',
+   q:"You find credible evidence that HIIT may not suit a deconditioned hypertensive client. Best next step?",
+   opts:["Proceed with HIIT anyway","Adjust the program, align with evidence, monitor closely, seek medical clearance","Ignore evidence and follow trends","Stop all training immediately"],
+   c:1,ex:"Applying evidence to individual client needs is core PT competency. Adjusting intensity + monitoring + medical clearance = safe, evidence-based practice."},
+  {ch:'Ch2',tag:'Ch 2',color:'#0369a1',bg:'#f0f9ff',
+   q:"In anatomical position, which is TRUE?",
+   opts:["Arms raised overhead, palms inward","Standing erect, feet together, face and palms facing forward","Lying flat with arms across chest","Standing legs apart, hands on hips"],
+   c:1,ex:"Anatomical position: standing erect, feet together, face AND palms directed forward. The universal reference for all body descriptions."},
+  {ch:'Ch2',tag:'Ch 2',color:'#0369a1',bg:'#f0f9ff',
+   q:"Which BEST describes 'Inferior'?",
+   opts:["Upper or above","Lower or below","Toward the front","Toward the back"],
+   c:1,ex:"Inferior = lower or below (toward feet). Superior = upper or above (toward head). Anterior = front, Posterior = back."},
+  {ch:'Ch2',tag:'Ch 2',color:'#0369a1',bg:'#f0f9ff',
+   q:"A bicep curl occurs primarily in which anatomical plane?",
+   opts:["Frontal plane","Transverse plane","Sagittal plane","Oblique plane"],
+   c:2,ex:"Bicep curl = elbow flexion/extension = forward-backward movement = sagittal plane. The sagittal plane divides the body into left and right halves."},
+  {ch:'Ch2',tag:'Ch 2',color:'#0369a1',bg:'#f0f9ff',
+   q:"Gas exchange (O₂ and CO₂) in the lungs takes place in the:",
+   opts:["Bronchi","Alveoli","Trachea","Pleura"],
+   c:1,ex:"Alveoli — ~30 million tiny cup-shaped sacs. Their large surface area and thin walls allow O₂ into blood capillaries and CO₂ out."},
+  {ch:'Ch2',tag:'Ch 2',color:'#0369a1',bg:'#f0f9ff',
+   q:"Which muscle tissue is under VOLUNTARY control?",
+   opts:["Cardiac muscle","Smooth muscle","Skeletal muscle","Visceral muscle"],
+   c:2,ex:"Skeletal muscle is voluntary (consciously controlled). Cardiac and smooth/visceral muscles are involuntary (controlled by autonomic nervous system)."},
+  {ch:'Ch2',tag:'Ch 2',color:'#0369a1',bg:'#f0f9ff',
+   q:"Which is the SMALLEST structural unit?",
+   opts:["Molecule","Cell","Tissue","Atom"],
+   c:3,ex:"Atoms are the smallest unit. Order: Atoms → Molecules → Cells → Tissues → Organs → Organ Systems → Organism."},
+  {ch:'Ch2',tag:'Ch 2',color:'#0369a1',bg:'#f0f9ff',
+   q:"The Pectoralis Major creates which movements?",
+   opts:["Adduction of shoulder, internal rotation & horizontal flexion","Adduction of elbow, internal rotation of scapula","Flexion of elbow, internal rotation of shoulder","Extension & external rotation of shoulder"],
+   c:0,ex:"Pec major pulls arm across body (adduction), rotates humerus inward (internal rotation), and moves arm horizontally forward (horizontal flexion) — all at the shoulder joint."},
+  {ch:'Ch3',tag:'Ch 3',color:'#065f46',bg:'#ecfdf5',
+   q:"Which BEST demonstrates applying anatomical knowledge in practice?",
+   opts:["Prescribing identical programs to all clients","Adjusting exercise selection based on joint function and muscle anatomy","Following only popular online workouts","Avoiding exercise science terminology"],
+   c:1,ex:"Applying A&P means tailoring exercises to each client's unique joint function, muscle anatomy, and movement capacity — not one-size-fits-all programming."},
+  {ch:'Ch3',tag:'Ch 3',color:'#065f46',bg:'#ecfdf5',
+   q:"Which strategy MOST reduces injury risk during client training?",
+   opts:["Skipping warm-up to save time","Max loads immediately to accelerate adaptation","Ignoring signs of discomfort","Evidence-based exercise technique and safe range of motion"],
+   c:3,ex:"Evidence-based technique + safe ROM are foundational. Skipping warm-up, max loads, and ignoring discomfort all significantly increase injury risk."},
+  {ch:'Ch3',tag:'Ch 3',color:'#065f46',bg:'#ecfdf5',
+   q:"Credible sources for anatomy and physiology include:",
+   opts:["BioAlive Animations only","Journal of Anatomy Studies only","GetBodySmart only","All of the above are correct"],
+   c:3,ex:"All three are valid resources from the course. Multiple resource types (animations, interactive sites, peer-reviewed journals) provide well-rounded knowledge."},
+  {ch:'Ch4',tag:'Ch 4',color:'#92400e',bg:'#fff7ed',
+   q:"BEST example of maintaining and updating professional knowledge?",
+   opts:["Relying on initial qualification knowledge only","Attending accredited workshops and reviewing new exercise science research","Using outdated resources because they are accessible","Following unverified trends without checking sources"],
+   c:1,ex:"Accredited workshops + reviewing current research = gold standard for professional development. Outdated resources and unverified trends risk client safety."},
+  {ch:'Ch4',tag:'Ch 4',color:'#92400e',bg:'#fff7ed',
+   q:"Why is it important to monitor and adjust your professional practice?",
+   opts:["To align with client needs, new evidence, and safe practice standards","To ensure programs are fashionable","To avoid documenting client results","To reduce communication with colleagues"],
+   c:0,ex:"Monitoring ensures programs remain effective, evidence-based and safe for each client. Fashion and avoiding documentation are contrary to professional standards."},
+  {ch:'Ch4',tag:'Ch 4',color:'#92400e',bg:'#fff7ed',
+   q:"MOST effective way of monitoring changes in your professional practice?",
+   opts:["Evaluating, measuring and assessing client's changes in performance","Reviewing your own performance monthly","Asking friends and family for feedback","Reviewing client results against your peers"],
+   c:0,ex:"Objectively evaluating, measuring, and assessing actual client performance changes gives the most direct and valid feedback on your programming effectiveness."},
+];
+
+let filteredQ=[...allQuiz],qIdx=0,qScore=0,qAnswered=0;
+function setQuizFilter(ch,btn){
+  document.querySelectorAll('.chapter-tabs .pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  filteredQ=ch==='all'?[...allQuiz]:allQuiz.filter(q=>q.ch===ch);
+  qIdx=0;qScore=0;qAnswered=0;
+  document.getElementById('quiz-area').style.display='block';
+  document.getElementById('quiz-result').style.display='none';
+  renderQ();
+}
+function renderQ(){
+  const q=filteredQ[qIdx];
+  const tag=document.getElementById('q-ch-tag');
+  tag.textContent=q.tag;tag.style.background=q.bg;tag.style.color=q.color;tag.style.border=`1px solid ${q.color}44`;
+  document.getElementById('q-num').textContent=`Question ${qIdx+1} / ${filteredQ.length}`;
+  document.getElementById('q-text').textContent=q.q;
+  const opts=document.getElementById('q-opts');
+  opts.innerHTML=q.opts.map((o,i)=>`<button class="q-opt" onclick="answerQ(${i})">${o}</button>`).join('');
+  const fb=document.getElementById('q-fb');fb.className='q-feedback';fb.textContent='';
+  document.getElementById('btn-next-q').style.display='none';
+}
+function answerQ(i){
+  const q=filteredQ[qIdx];
+  document.querySelectorAll('.q-opt').forEach((o,oi)=>{
+    o.classList.add('locked');
+    if(oi===q.c)o.classList.add('correct');
+    else if(oi===i&&i!==q.c)o.classList.add('wrong');
+  });
+  qAnswered++;if(i===q.c)qScore++;
+  const fb=document.getElementById('q-fb');
+  fb.textContent=(i===q.c?'✅ Correct! ':'❌ Not quite. ')+q.ex;
+  fb.className=`q-feedback show ${i===q.c?'fb-correct':'fb-wrong'}`;
+  document.getElementById('btn-next-q').style.display='inline-block';
+}
+function nextQ(){
+  qIdx++;
+  if(qIdx>=filteredQ.length){
+    document.getElementById('quiz-area').style.display='none';
+    document.getElementById('quiz-result').style.display='block';
+    const pct=Math.round((qScore/filteredQ.length)*100);
+    const circ=327;const off=circ-(circ*pct/100);
+    document.getElementById('result-arc').style.strokeDashoffset=off;
+    document.getElementById('result-pct').textContent=pct+'%';
+    document.getElementById('result-msg').textContent=
+      pct>=90?`🏆 Excellent! ${qScore}/${filteredQ.length} — you've nailed this chapter.`:
+      pct>=70?`👍 Good work! ${qScore}/${filteredQ.length} — review missed questions.`:
+      pct>=50?`📖 Getting there! ${qScore}/${filteredQ.length} — use flashcards to reinforce.`:
+      `💪 Keep practising! ${qScore}/${filteredQ.length} — revisit the chapter content then retry.`;
+  } else renderQ();
+}
+function restartQuiz(){
+  qIdx=0;qScore=0;qAnswered=0;
+  document.getElementById('quiz-area').style.display='block';
+  document.getElementById('quiz-result').style.display='none';
+  renderQ();
+}
+
+// ======= MUSCLES =======
+const muscles=[
+  {n:"Deltoids",r:"Shoulder",joints:"Shoulder",bones:"Scapula, Clavicle, Humerus",actions:"Shoulder Abduction, Flexion, Internal & External Rotation"},
+  {n:"Trapezius",r:"Upper Back",joints:"Shoulder, Vertebral",bones:"Skull, Vertebrae, Scapula, Clavicle",actions:"Scapula Elevation, Retraction and Depression"},
+  {n:"Pectoralis Major",r:"Chest",joints:"Shoulder",bones:"Humerus, Sternum, Clavicle, Ribs",actions:"Shoulder Adduction, Internal Rotation, Horizontal Flexion"},
+  {n:"Serratus Anterior",r:"Chest",joints:"Shoulder",bones:"Scapula, Ribs",actions:"Rotation of Humerus and Scapula"},
+  {n:"Biceps Brachii",r:"Upper Arm",joints:"Shoulder (long head), Elbow",bones:"Scapula, Humerus, Radius, Ulna",actions:"Shoulder Flexion, Elbow Flexion, Forearm Supination"},
+  {n:"Triceps Brachii",r:"Upper Arm",joints:"Shoulder, Elbow",bones:"Humerus, Ulna, Scapula",actions:"Elbow Extension, Shoulder Extension"},
+  {n:"Latissimus Dorsi",r:"Back",joints:"Shoulder, Hips, Vertebral",bones:"Humerus, Vertebrae, Scapula, Ribs, Iliac Crest",actions:"Shoulder Adduction, Medial Rotation and Extension"},
+  {n:"Rhomboids",r:"Back",joints:"Shoulder",bones:"Vertebrae, Scapula",actions:"Scapula Retraction (Adduction) and Rotation"},
+  {n:"Rectus Femoris",r:"Quadriceps",joints:"Knee, Hip",bones:"Pelvis, Femur, Tibia",actions:"Knee Extension, Hip Flexion"},
+  {n:"Vastus Group",r:"Quadriceps",joints:"Knee",bones:"Femur, Tibia",actions:"Knee Extension (medialis, lateralis, intermedius)"},
+  {n:"Sartorius",r:"Quadriceps",joints:"Knee, Hip",bones:"Pelvis, Femur, Tibia",actions:"Hip Flexion, Abduction & Lateral Rotation of Femur, Knee Flexion. Longest muscle in the human body."},
+  {n:"Iliopsoas",r:"Hip Flexor",joints:"Hip",bones:"Lumbar Vertebrae, Pelvis, Femur",actions:"Hip Flexion, Assists External Rotation of Femur"},
+  {n:"Tibialis Anterior",r:"Lower Leg",joints:"Ankle",bones:"Tibia, Medial Cuneiform, 1st Metatarsal",actions:"Ankle Dorsiflexion, Foot Inversion"},
+  {n:"Gluteus Maximus",r:"Glutes",joints:"Hip",bones:"Ilium, Sacrum, Femur",actions:"Hip Extension, Lateral Rotation, Abduction"},
+  {n:"Biceps Femoris",r:"Hamstrings",joints:"Knee, Hip",bones:"Pelvis, Femur, Tibia, Fibula",actions:"Knee Flexion, Hip Extension"},
+  {n:"Semitendinosus",r:"Hamstrings",joints:"Knee, Hip",bones:"Pelvis, Femur, Tibia",actions:"Knee Flexion, Hip Extension"},
+  {n:"Semimembranosus",r:"Hamstrings",joints:"Knee, Hip",bones:"Pelvis, Femur, Tibia",actions:"Knee Flexion, Hip Extension"},
+  {n:"Gastrocnemius",r:"Calf",joints:"Knee, Ankle",bones:"Femur, Calcaneus",actions:"Ankle Plantar Flexion, Assists Knee Flexion"},
+  {n:"Soleus",r:"Calf",joints:"Ankle",bones:"Tibia, Fibula, Calcaneus",actions:"Ankle Plantar Flexion"},
+  {n:"Rectus Abdominis",r:"Core",joints:"Vertebral",bones:"Pubic Bone, Ribs, Sternum",actions:"Trunk Flexion"},
+  {n:"Rotator Cuff",r:"Shoulder",joints:"Shoulder",bones:"Scapula, Humerus",actions:"Stabilises humeral head in socket. Supraspinatus: abduction. Infraspinatus & Teres minor: external rotation. Subscapularis: internal rotation"},
+];
+const mRegions=['All',...new Set(muscles.map(m=>m.r))];
+let activeRegion='All';
+function buildMuscles(){
+  const mf=document.getElementById('muscle-filter');
+  mRegions.forEach(r=>{
+    const b=document.createElement('button');b.className='pill'+(r==='All'?' active':'');
+    b.textContent=r;b.onclick=function(){
+      document.querySelectorAll('.muscle-region-filter .pill').forEach(p=>p.classList.remove('active'));
+      b.classList.add('active');activeRegion=r;renderMuscles();
+    };mf.appendChild(b);
+  });
+  renderMuscles();
+}
+function renderMuscles(){
+  const g=document.getElementById('muscle-grid');
+  const list=activeRegion==='All'?muscles:muscles.filter(m=>m.r===activeRegion);
+  g.innerHTML=list.map(m=>`
+    <div class="muscle-card" onclick="this.classList.toggle('open')">
+      <div class="mc-name">${m.n}</div>
+      <div class="mc-region">${m.r}</div>
+      <div class="mc-actions">🎯 ${m.actions}</div>
+      <div class="mc-detail"><strong>Joints:</strong> ${m.joints}<br><strong>Bones:</strong> ${m.bones}</div>
+    </div>`).join('');
+}
+
+// ======= INIT =======
+buildFC();
+renderQ();
+buildMuscles();
+</script>
+</body>
+</html>
